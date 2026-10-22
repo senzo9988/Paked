@@ -1,0 +1,2960 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#0a0a0c" />
+<title>Selvo Webstore</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<style>
+/* ============================================================
+   SELVO WEBSTORE — Redesigned Design System
+   Editorial dark · Real liquid glass · Warm amber accent
+   ============================================================ */
+
+:root{
+  /* ---- Surfaces: graphite, not pure black ---- */
+  --bg-0:#0a0a0c;
+  --bg-1:#101013;
+  --bg-2:#16161a;
+  --bg-3:#1d1d22;
+
+  /* ---- Glass: layered translucency ---- */
+  --glass-bg:     rgba(255,255,255,.028);
+  --glass-bg-2:   rgba(255,255,255,.045);
+  --glass-bg-3:   rgba(255,255,255,.075);
+  --glass-border: rgba(255,255,255,.075);
+  --glass-border-strong: rgba(255,255,255,.13);
+  --glass-highlight: rgba(255,255,255,.14);
+  --glass-shadow-inner: inset 0 1px 0 rgba(255,255,255,.07),
+                        inset 0 -1px 0 rgba(0,0,0,.35);
+
+  /* ---- Text ---- */
+  --text-1:#f2f0eb;
+  --text-2:#a6a39c;
+  --text-3:#65635e;
+  --text-4:#3e3d3a;
+
+  /* ---- Single accent: warm amber (no AI-purple) ---- */
+  --accent:      #e5a558;
+  --accent-hi:   #f2bd73;
+  --accent-lo:   #b87f37;
+  --accent-soft: rgba(229,165,88,.12);
+  --accent-glow: rgba(229,165,88,.28);
+
+  /* ---- Semantic ---- */
+  --success:#7fc896;
+  --warn:#e5c158;
+  --danger:#e8797f;
+
+  /* ---- Radii: varied, not uniform ---- */
+  --r-xs:6px;  --r-sm:9px;  --r-md:14px;  --r-lg:20px;
+  --r-xl:28px; --r-pill:999px;
+
+  /* ---- Shadows: tinted, warm-neutral ---- */
+  --sh-1: 0 1px 2px rgba(0,0,0,.5);
+  --sh-2: 0 6px 24px rgba(0,0,0,.35), 0 2px 6px rgba(0,0,0,.25);
+  --sh-3: 0 20px 60px rgba(0,0,0,.5), 0 6px 18px rgba(0,0,0,.35);
+  --sh-glow: 0 12px 40px -12px var(--accent-glow);
+
+  /* ---- Motion: spring-flavored cubic-beziers ---- */
+  --ease-out:  cubic-bezier(.16,1,.3,1);
+  --ease-spring: cubic-bezier(.34,1.56,.64,1);
+  --ease-snap: cubic-bezier(.4,0,.2,1);
+  --t-fast: 180ms var(--ease-out);
+  --t-med:  320ms var(--ease-out);
+  --t-slow: 560ms var(--ease-out);
+
+  /* ---- Type ---- */
+  --font-sans: 'Geist','Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --font-serif:'Instrument Serif',Georgia,serif;
+  --font-mono: 'JetBrains Mono','SF Mono',Menlo,monospace;
+
+  --z-nav:40;
+  --z-overlay:100;
+  --z-splash:1000;
+  --z-toast:200;
+}
+
+[data-theme="light"]{
+  --bg-0:#f4f1ea;
+  --bg-1:#ebe7de;
+  --bg-2:#ffffff;
+  --bg-3:#f8f5ef;
+  --glass-bg:     rgba(255,255,255,.55);
+  --glass-bg-2:   rgba(255,255,255,.72);
+  --glass-bg-3:   rgba(255,255,255,.88);
+  --glass-border: rgba(20,15,5,.08);
+  --glass-border-strong: rgba(20,15,5,.16);
+  --glass-highlight: rgba(255,255,255,.9);
+  --glass-shadow-inner: inset 0 1px 0 rgba(255,255,255,.9),
+                        inset 0 -1px 0 rgba(0,0,0,.04);
+  --text-1:#14120d;
+  --text-2:#4a463d;
+  --text-3:#87827a;
+  --text-4:#c4bfb4;
+  --accent:      #b3762e;
+  --accent-hi:   #c88b41;
+  --accent-lo:   #8a5920;
+  --accent-soft: rgba(179,118,46,.12);
+  --accent-glow: rgba(179,118,46,.22);
+  --sh-2: 0 6px 24px rgba(60,40,10,.10), 0 2px 6px rgba(60,40,10,.06);
+  --sh-3: 0 20px 60px rgba(60,40,10,.16), 0 6px 18px rgba(60,40,10,.08);
+}
+
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0;min-height:100%}
+body{
+  font-family:var(--font-sans);
+  font-weight:400;
+  color:var(--text-1);
+  background:var(--bg-0);
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+  overflow-x:hidden;
+  min-height:100dvh;
+  font-feature-settings:"ss01","cv01","cv11";
+}
+/* Ambient mesh — soft, one accent hue */
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:
+    radial-gradient(900px 520px at 12% -8%, var(--accent-soft), transparent 55%),
+    radial-gradient(700px 500px at 110% 8%, rgba(255,255,255,.04), transparent 60%),
+    radial-gradient(1000px 700px at 50% 120%, var(--accent-soft), transparent 60%);
+}
+[data-theme="light"] body::before{
+  background:
+    radial-gradient(900px 520px at 12% -8%, var(--accent-soft), transparent 55%),
+    radial-gradient(700px 500px at 110% 8%, rgba(255,220,170,.18), transparent 60%);
+}
+/* Grain overlay — breaks digital flatness */
+body::after{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:1;
+  opacity:.14; mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 220 220' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
+}
+[data-theme="light"] body::after{opacity:.08;mix-blend-mode:multiply}
+
+button,input,textarea,select{font:inherit;color:inherit}
+button{background:none;border:0;cursor:pointer;padding:0}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+h1,h2,h3,h4{margin:0;font-weight:500;letter-spacing:-.02em;text-wrap:balance}
+p{margin:0}
+::selection{background:var(--accent);color:#1a1208}
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-thumb{background:var(--glass-border-strong);border-radius:20px}
+::-webkit-scrollbar-thumb:hover{background:var(--glass-highlight)}
+
+/* ============================================================
+   REAL LIQUID GLASS
+   Layered: bg + blur + inner border + inner shadow + edge highlight
+   ============================================================ */
+.glass{
+  position:relative;
+  background:var(--glass-bg);
+  backdrop-filter:blur(24px) saturate(160%);
+  -webkit-backdrop-filter:blur(24px) saturate(160%);
+  border:1px solid var(--glass-border);
+  border-radius:var(--r-md);
+  box-shadow:var(--glass-shadow-inner);
+}
+/* Edge refraction: top-left highlight, bottom-right shade */
+.glass::before{
+  content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+  background:
+    linear-gradient(140deg, var(--glass-highlight) 0%, transparent 22%),
+    linear-gradient(320deg, rgba(0,0,0,.18) 0%, transparent 30%);
+  mix-blend-mode:overlay;opacity:.9;
+}
+[data-theme="light"] .glass::before{
+  background:
+    linear-gradient(140deg, rgba(255,255,255,.9) 0%, transparent 22%),
+    linear-gradient(320deg, rgba(120,90,40,.06) 0%, transparent 30%);
+  mix-blend-mode:normal;
+}
+@supports not (backdrop-filter: blur(1px)){
+  .glass{background:var(--bg-2)}
+}
+.glass-strong{
+  background:var(--glass-bg-2);
+  backdrop-filter:blur(36px) saturate(180%);
+  -webkit-backdrop-filter:blur(36px) saturate(180%);
+  border:1px solid var(--glass-border-strong);
+  box-shadow:var(--glass-shadow-inner), var(--sh-3);
+}
+
+/* ============================================================
+   LAYOUT
+   ============================================================ */
+.app{position:relative;z-index:2;display:flex;flex-direction:column;min-height:100dvh}
+
+.topbar{
+  position:sticky;top:0;z-index:var(--z-nav);
+  display:flex;align-items:center;gap:12px;
+  padding:14px 18px;
+  padding-top:calc(14px + env(safe-area-inset-top));
+  background:linear-gradient(180deg, color-mix(in srgb, var(--bg-0) 88%, transparent), transparent);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+}
+
+.brand{display:flex;align-items:center;gap:10px}
+.brand-mark{
+  width:30px;height:30px;border-radius:9px;position:relative;flex-shrink:0;
+  background:linear-gradient(135deg, var(--accent-hi), var(--accent-lo));
+  box-shadow:0 4px 18px -4px var(--accent-glow), inset 0 0 0 1px rgba(255,255,255,.15);
+  display:grid;place-items:center;color:#1a1208;font-family:var(--font-serif);font-size:19px;font-style:italic;line-height:1;
+  overflow:hidden;
+}
+.brand-mark::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(140deg, rgba(255,255,255,.4), transparent 45%);
+  pointer-events:none;
+}
+.brand-name{
+  font-family:var(--font-serif);font-style:italic;font-weight:400;
+  font-size:20px;letter-spacing:-.01em;
+}
+.topbar-spacer{flex:1}
+
+.icon-btn{
+  width:36px;height:36px;display:grid;place-items:center;border-radius:10px;
+  color:var(--text-2);
+  background:var(--glass-bg);border:1px solid var(--glass-border);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  transition:color var(--t-fast), background var(--t-fast), transform var(--t-fast);
+  position:relative;
+}
+.icon-btn:hover{color:var(--text-1);background:var(--glass-bg-2)}
+.icon-btn:active{transform:scale(.93)}
+.icon-btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.icon-btn svg{width:17px;height:17px;stroke-width:1.75}
+
+.main{
+  flex:1;
+  width:100%;
+  max-width:1280px;
+  margin:0 auto;
+  padding:8px 18px 128px;
+}
+@media(min-width:900px){
+  .main{padding-bottom:64px;padding-top:24px}
+}
+
+/* ============================================================
+   TYPOGRAPHY — Editorial hierarchy
+   ============================================================ */
+.display{
+  font-family:var(--font-serif);font-style:italic;font-weight:400;
+  letter-spacing:-.02em;line-height:1.02;
+  text-wrap:balance;
+}
+.kicker{
+  font-family:var(--font-mono);font-size:10.5px;font-weight:500;
+  text-transform:uppercase;letter-spacing:.16em;color:var(--text-3);
+}
+.num{font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1}
+
+.section{margin-bottom:36px}
+.section-head{
+  display:flex;align-items:flex-end;justify-content:space-between;
+  gap:12px;margin:0 2px 16px;
+}
+.section-title{
+  font-family:var(--font-serif);font-style:italic;font-weight:400;
+  font-size:22px;letter-spacing:-.02em;line-height:1.1;
+}
+.section-sub{
+  font-family:var(--font-mono);font-size:10px;text-transform:uppercase;
+  letter-spacing:.16em;color:var(--text-3);margin-top:6px;
+}
+.section-link{
+  font-family:var(--font-mono);font-size:10.5px;
+  text-transform:uppercase;letter-spacing:.12em;
+  color:var(--accent);font-weight:500;
+  display:inline-flex;align-items:center;gap:6px;
+  transition:gap var(--t-fast);
+}
+.section-link:hover{gap:10px}
+.section-link svg{width:12px;height:12px}
+
+/* ============================================================
+   SEARCH
+   ============================================================ */
+.searchbar{
+  display:flex;align-items:center;gap:10px;
+  padding:0 16px;height:52px;border-radius:var(--r-md);
+  background:var(--glass-bg);border:1px solid var(--glass-border);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  box-shadow:var(--glass-shadow-inner);
+  position:relative;overflow:hidden;
+  transition:border-color var(--t-fast), box-shadow var(--t-fast), background var(--t-fast);
+}
+/* Spotlight follows focus */
+.searchbar:focus-within{
+  border-color:var(--accent);
+  background:var(--glass-bg-2);
+  box-shadow:var(--glass-shadow-inner), 0 0 0 4px var(--accent-soft), var(--sh-2);
+}
+.searchbar svg{width:18px;height:18px;color:var(--text-3);flex-shrink:0;stroke-width:1.75;transition:color var(--t-fast)}
+.searchbar:focus-within svg.lead{color:var(--accent)}
+.searchbar input{
+  flex:1;background:none;border:0;outline:0;
+  font-size:14.5px;letter-spacing:-.005em;
+}
+.searchbar input::placeholder{color:var(--text-3)}
+.searchbar kbd{
+  font-family:var(--font-mono);font-size:10px;
+  padding:3px 7px;border-radius:6px;
+  background:var(--glass-bg-2);border:1px solid var(--glass-border);
+  color:var(--text-3);
+}
+
+/* ============================================================
+   HERO CAROUSEL — cinematic
+   ============================================================ */
+.hero{
+  position:relative;border-radius:var(--r-xl);overflow:hidden;
+  margin-bottom:28px;background:var(--bg-2);
+  box-shadow:var(--sh-3);
+}
+.hero-track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none}
+.hero-track::-webkit-scrollbar{display:none}
+.hero-slide{
+  flex:0 0 100%;scroll-snap-align:start;position:relative;
+  min-height:280px;display:flex;align-items:flex-end;padding:26px;
+  background-size:cover;background-position:center;
+}
+.hero-slide::before{
+  content:"";position:absolute;inset:0;
+  background:
+    linear-gradient(180deg, rgba(10,10,12,.2) 15%, rgba(10,10,12,.9) 100%),
+    linear-gradient(90deg, rgba(10,10,12,.55) 0%, transparent 55%);
+}
+.hero-slide>*{position:relative;z-index:1}
+.hero-info{max-width:620px;color:#fff}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  font-family:var(--font-mono);font-size:10px;font-weight:500;
+  text-transform:uppercase;letter-spacing:.16em;
+  padding:5px 10px;border-radius:var(--r-xs);
+  background:rgba(255,255,255,.14);
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  border:1px solid rgba(255,255,255,.18);
+  margin-bottom:14px;color:var(--accent-hi);
+}
+.hero-badge svg{width:11px;height:11px}
+.hero-title{
+  font-family:var(--font-serif);font-style:italic;font-weight:400;
+  font-size:38px;line-height:1.02;letter-spacing:-.025em;
+  margin:0 0 10px;text-wrap:balance;
+}
+.hero-sub{
+  font-size:14px;line-height:1.55;color:rgba(255,255,255,.7);
+  margin:0 0 20px;max-width:52ch;
+}
+.hero-actions{display:flex;gap:10px;flex-wrap:wrap}
+
+.hero-dots{
+  position:absolute;bottom:18px;right:22px;
+  display:flex;gap:6px;z-index:2;
+}
+.hero-dot{
+  width:22px;height:3px;border-radius:2px;
+  background:rgba(255,255,255,.28);
+  transition:background var(--t-med), width var(--t-med);
+}
+.hero-dot.active{background:#fff;width:34px}
+.hero-dot:hover{background:rgba(255,255,255,.6)}
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  padding:12px 18px;border-radius:var(--r-sm);
+  font-size:13.5px;font-weight:500;letter-spacing:-.005em;
+  transition:transform var(--t-fast), box-shadow var(--t-fast),
+             background var(--t-fast), border-color var(--t-fast), color var(--t-fast);
+  border:1px solid transparent;white-space:nowrap;
+  position:relative;overflow:hidden;
+}
+.btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.btn:active{transform:translateY(1px) scale(.985)}
+.btn svg{width:16px;height:16px;stroke-width:1.75}
+
+.btn-primary{
+  background:linear-gradient(135deg, var(--accent-hi), var(--accent));
+  color:#1a1208;font-weight:600;
+  box-shadow:var(--sh-glow), inset 0 1px 0 rgba(255,255,255,.35);
+}
+.btn-primary::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(140deg, rgba(255,255,255,.35), transparent 40%);
+  pointer-events:none;opacity:.6;
+}
+.btn-primary:hover{box-shadow:0 16px 48px -12px var(--accent-glow), inset 0 1px 0 rgba(255,255,255,.4)}
+
+.btn-ghost{
+  background:var(--glass-bg);color:var(--text-1);
+  border-color:var(--glass-border);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  box-shadow:var(--glass-shadow-inner);
+}
+.btn-ghost:hover{background:var(--glass-bg-2);border-color:var(--glass-border-strong)}
+.btn-danger{background:rgba(232,121,127,.12);color:var(--danger);border-color:rgba(232,121,127,.25)}
+.btn-danger:hover{background:rgba(232,121,127,.18)}
+.btn-block{width:100%}
+
+/* ============================================================
+   APP CARDS
+   ============================================================ */
+.carousel{
+  display:flex;gap:14px;overflow-x:auto;
+  padding:4px 2px 12px;
+  scroll-snap-type:x proximity;scrollbar-width:none;
+}
+.carousel::-webkit-scrollbar{display:none}
+.carousel>*{scroll-snap-align:start;flex-shrink:0}
+
+.app-card{
+  width:158px;display:flex;flex-direction:column;gap:12px;padding:16px;
+  border-radius:var(--r-md);
+  background:var(--glass-bg);border:1px solid var(--glass-border);
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  box-shadow:var(--glass-shadow-inner);
+  cursor:pointer;position:relative;
+  transition:transform var(--t-med), box-shadow var(--t-med),
+             border-color var(--t-med), background var(--t-med);
+}
+/* spotlight border on hover */
+.app-card::before{
+  content:"";position:absolute;inset:-1px;border-radius:inherit;pointer-events:none;
+  background:radial-gradient(220px circle at var(--mx,50%) var(--my,0%),
+              var(--accent-glow), transparent 45%);
+  opacity:0;transition:opacity var(--t-med);
+}
+.app-card:hover::before{opacity:.9}
+.app-card:hover{
+  transform:translateY(-4px);
+  border-color:var(--glass-border-strong);
+  background:var(--glass-bg-2);
+  box-shadow:var(--glass-shadow-inner), var(--sh-3);
+}
+.app-card:active{transform:translateY(-1px) scale(.99)}
+
+.app-card .icon{
+  width:60px;height:60px;border-radius:16px;background:var(--bg-3);
+  object-fit:cover;border:1px solid var(--glass-border);
+  box-shadow:0 6px 20px -6px rgba(0,0,0,.5);
+}
+.app-card .name{
+  font-size:13.5px;font-weight:500;line-height:1.3;letter-spacing:-.005em;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+}
+.app-card .dev{
+  font-size:11.5px;color:var(--text-3);
+  display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden;
+}
+.app-card .meta{
+  display:flex;align-items:center;gap:6px;
+  font-family:var(--font-mono);font-size:10.5px;color:var(--text-2);
+  font-variant-numeric:tabular-nums;
+}
+.app-card .meta svg{width:11px;height:11px;stroke-width:2}
+
+.ribbon{
+  position:absolute;top:12px;right:12px;
+  font-family:var(--font-mono);font-size:9px;font-weight:600;
+  letter-spacing:.12em;text-transform:uppercase;
+  padding:3px 7px;border-radius:5px;
+  background:var(--accent);color:#1a1208;
+}
+
+/* App row (wide, editorial) */
+.app-row{
+  display:flex;gap:16px;padding:16px;border-radius:var(--r-md);
+  background:var(--glass-bg);border:1px solid var(--glass-border);
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  box-shadow:var(--glass-shadow-inner);
+  align-items:center;min-width:320px;cursor:pointer;
+  transition:transform var(--t-med), background var(--t-med),
+             border-color var(--t-med), box-shadow var(--t-med);
+  position:relative;
+}
+.app-row:hover{
+  background:var(--glass-bg-2);border-color:var(--glass-border-strong);
+  transform:translateY(-2px);box-shadow:var(--glass-shadow-inner), var(--sh-2);
+}
+.app-row .icon{
+  width:64px;height:64px;border-radius:16px;object-fit:cover;background:var(--bg-3);
+  border:1px solid var(--glass-border);flex-shrink:0;
+}
+.app-row .info{flex:1;min-width:0}
+.app-row .name{
+  font-weight:500;font-size:15px;letter-spacing:-.01em;margin-bottom:2px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.app-row .dev{
+  font-size:12px;color:var(--text-3);margin-bottom:8px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.app-row .meta{
+  display:flex;gap:14px;
+  font-family:var(--font-mono);font-size:11px;color:var(--text-2);
+  font-variant-numeric:tabular-nums;
+}
+.app-row .meta span{display:inline-flex;align-items:center;gap:5px}
+.app-row .meta svg{width:11px;height:11px;stroke-width:2}
+.app-row .install{
+  font-family:var(--font-mono);font-size:10.5px;font-weight:600;
+  letter-spacing:.12em;text-transform:uppercase;
+  padding:9px 14px;border-radius:var(--r-xs);
+  background:var(--accent-soft);color:var(--accent);
+  border:1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+  flex-shrink:0;
+}
+
+/* ============================================================
+   SKELETON
+   ============================================================ */
+.skel{
+  position:relative;overflow:hidden;background:var(--glass-bg);border-radius:var(--r-md);
+  border:1px solid var(--glass-border);
+}
+.skel::after{
+  content:"";position:absolute;inset:0;transform:translateX(-100%);
+  background:linear-gradient(90deg, transparent, var(--glass-bg-3), transparent);
+  animation:shimmer 1.5s infinite;
+}
+@keyframes shimmer{100%{transform:translateX(100%)}}
+.skel-card{width:158px;height:200px;flex-shrink:0}
+.skel-row{height:96px;min-width:320px;flex-shrink:0}
+.skel-hero{height:280px;border-radius:var(--r-xl)}
+
+/* ============================================================
+   BOTTOM NAV — with real sliding indicator
+   ============================================================ */
+.bottom-nav{
+  position:fixed;left:0;right:0;bottom:0;z-index:var(--z-nav);
+  display:flex;justify-content:space-around;align-items:center;
+  padding:8px 10px calc(8px + env(safe-area-inset-bottom));
+  background:color-mix(in srgb, var(--bg-0) 82%, transparent);
+  backdrop-filter:blur(26px) saturate(180%);
+  -webkit-backdrop-filter:blur(26px) saturate(180%);
+  border-top:1px solid var(--glass-border);
+  box-shadow:0 -8px 32px -8px rgba(0,0,0,.4);
+}
+[data-theme="light"] .bottom-nav{
+  background:color-mix(in srgb, var(--bg-0) 85%, transparent);
+  box-shadow:0 -8px 32px -8px rgba(60,40,10,.12);
+}
+.nav-item{
+  position:relative;display:flex;flex-direction:column;align-items:center;gap:3px;
+  padding:8px 14px;border-radius:12px;
+  color:var(--text-3);
+  font-family:var(--font-mono);font-size:9.5px;font-weight:500;
+  text-transform:uppercase;letter-spacing:.1em;
+  transition:color var(--t-med);
+  flex:1;max-width:80px;
+}
+.nav-item svg{width:22px;height:22px;stroke-width:1.6;transition:transform var(--t-med) var(--ease-spring)}
+.nav-item.active{color:var(--accent)}
+.nav-item.active svg{transform:translateY(-1px)}
+.nav-item:active svg{transform:scale(.88)}
+.nav-item:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+@media(min-width:900px){ .bottom-nav{display:none} }
+
+/* ============================================================
+   DESKTOP SIDE NAV
+   ============================================================ */
+.side-nav{display:none}
+@media(min-width:900px){
+  .app{flex-direction:row}
+  .side-nav{
+    display:flex;flex-direction:column;gap:4px;
+    padding:22px 14px;width:236px;flex-shrink:0;
+    position:sticky;top:0;height:100dvh;
+    border-right:1px solid var(--glass-border);
+    background:linear-gradient(180deg, color-mix(in srgb, var(--glass-bg) 100%, transparent), transparent);
+  }
+  .side-nav .brand{padding:0 10px 26px}
+  .side-item{
+    display:flex;align-items:center;gap:12px;
+    padding:10px 12px;border-radius:10px;
+    color:var(--text-2);font-size:13.5px;font-weight:400;
+    cursor:pointer;
+    transition:background var(--t-fast), color var(--t-fast);
+  }
+  .side-item svg{width:18px;height:18px;stroke-width:1.6}
+  .side-item:hover{background:var(--glass-bg);color:var(--text-1)}
+  .side-item.active{
+    background:var(--accent-soft);color:var(--accent);
+    box-shadow:inset 0 0 0 1px color-mix(in srgb, var(--accent) 22%, transparent);
+  }
+  .side-spacer{flex:1}
+  .content-wrap{flex:1;min-width:0;display:flex;flex-direction:column}
+  .topbar{padding:18px 26px}
+}
+
+/* ============================================================
+   MODAL / SHEET
+   ============================================================ */
+.overlay{
+  position:fixed;inset:0;z-index:var(--z-overlay);
+  background:rgba(5,5,7,.7);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  opacity:0;pointer-events:none;
+  transition:opacity var(--t-med);
+  display:grid;place-items:center;padding:16px;
+}
+[data-theme="light"] .overlay{background:rgba(40,30,15,.45)}
+.overlay.open{opacity:1;pointer-events:auto}
+.sheet{
+  width:100%;max-width:540px;max-height:92dvh;overflow-y:auto;
+  padding:26px;border-radius:var(--r-xl);
+  background:var(--bg-2);border:1px solid var(--glass-border-strong);
+  box-shadow:var(--sh-3);
+  transform:translateY(24px) scale(.97);
+  opacity:0;
+  transition:transform var(--t-med) var(--ease-spring), opacity var(--t-med);
+}
+.overlay.open .sheet{transform:translateY(0) scale(1);opacity:1}
+
+.sheet-head{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:22px;gap:12px;
+}
+.sheet-title{
+  font-family:var(--font-serif);font-style:italic;font-weight:400;
+  font-size:24px;letter-spacing:-.02em;
+}
+
+.field{margin-bottom:16px}
+.field label{
+  display:block;font-family:var(--font-mono);
+  font-size:10.5px;font-weight:500;text-transform:uppercase;
+  letter-spacing:.12em;color:var(--text-3);margin-bottom:8px;
+}
+.field input,.field textarea,.field select{
+  width:100%;padding:13px 15px;border-radius:var(--r-sm);
+  background:var(--glass-bg);border:1px solid var(--glass-border);
+  outline:0;font-size:14px;letter-spacing:-.005em;
+  transition:border-color var(--t-fast), box-shadow var(--t-fast), background var(--t-fast);
+}
+.field input:focus,.field textarea:focus,.field select:focus{
+  border-color:var(--accent);background:var(--glass-bg-2);
+  box-shadow:0 0 0 4px var(--accent-soft);
+}
+.field textarea{resize:vertical;min-height:96px;font-family:var(--font-sans);line-height:1.55}
+
+.form-error{
+  font-size:12.5px;color:var(--danger);margin-top:6px;min-height:18px;
+  font-family:var(--font-mono);letter-spacing:.02em;
+}
+.form-switch{
+  text-align:center;font-size:13px;color:var(--text-2);margin-top:20px;
+}
+.form-switch a{color:var(--accent);font-weight:500;cursor:pointer}
+.form-switch a:hover{text-decoration:underline}
+
+/* ============================================================
+   TOASTS
+   ============================================================ */
+.toasts{
+  position:fixed;bottom:96px;left:50%;transform:translateX(-50%);
+  z-index:var(--z-toast);display:flex;flex-direction:column;gap:10px;
+  pointer-events:none;width:calc(100% - 32px);max-width:400px;
+}
+@media(min-width:900px){ .toasts{bottom:22px} }
+.toast{
+  padding:13px 16px;border-radius:var(--r-sm);
+  background:var(--glass-bg-2);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+  border:1px solid var(--glass-border-strong);
+  box-shadow:var(--glass-shadow-inner), var(--sh-3);
+  font-size:13px;font-weight:400;letter-spacing:-.005em;
+  display:flex;gap:10px;align-items:center;
+  animation:toastIn var(--t-med) var(--ease-spring) both;
+}
+.toast svg{width:15px;height:15px;flex-shrink:0;stroke-width:2}
+.toast.err{border-color:color-mix(in srgb, var(--danger) 40%, transparent)}
+.toast.err svg{color:var(--danger)}
+.toast.ok{border-color:color-mix(in srgb, var(--success) 40%, transparent)}
+.toast.ok svg{color:var(--success)}
+@keyframes toastIn{
+  from{opacity:0;transform:translateY(14px) scale(.96)}
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+
+/* ============================================================
+   APP DETAILS
+   ============================================================ */
+.detail-hero{
+  display:flex;gap:20px;align-items:flex-start;
+  padding:22px;border-radius:var(--r-lg);margin-bottom:20px;
+  background:var(--glass-bg);border:1px solid var(--glass-border);
+  backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);
+  box-shadow:var(--glass-shadow-inner);
+}
+.detail-hero .icon{
+  width:92px;height:92px;border-radius:22px;object-fit:cover;
+  box-shadow:var(--sh-3);background:var(--bg-3);flex-shrink:0;
+  border:1px solid var(--glass-border);
+}
+.detail-hero .info{flex:1;min-width:0}
+.detail-hero h1{
+  font-family:var(--font-serif);font-style:italic;font-weight:400;
+  font-size:28px;letter-spacing:-.02em;line-height:1.05;margin-bottom:6px;
+}
+.detail-hero .dev{
+  color:var(--accent);font-weight:500;font-size:13.5px;margin-bottom:12px;
+}
+.stat-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:1px;
+  background:var(--glass-border);border-radius:var(--r-md);overflow:hidden;
+  margin-bottom:20px;border:1px solid var(--glass-border);
+}
+.stat{padding:16px 12px;background:var(--bg-2);text-align:center}
+.stat .v{
+  font-family:var(--font-serif);font-style:italic;font-weight:400;
+  font-size:22px;letter-spacing:-.01em;
+  font-variant-numeric:tabular-nums;
+}
+.stat .k{
+  font-family:var(--font-mono);font-size:9.5px;color:var(--text-3);
+  text-transform:uppercase;letter-spacing:.14em;margin-top:4px;
+}
+
+.screens{display:flex;gap:12px;overflow-x:auto;padding:4px 0 8px;scrollbar-width:none}
+.screens::-webkit-scrollbar{display:none}
+.screens img{
+  height:360px;width:auto;border-radius:var(--r-md);
+  border:1px solid var(--glass-border);flex-shrink:0;object-fit:cover;
+  box-shadow:var(--sh-2);
+}
+.desc{
+  font-size:14px;line-height:1.7;color:var(--text-2);
+  white-space:pre-wrap;max-width:66ch;
+}
+.desc strong{color:var(--text-1);font-weight:500}
+
+.review{
+  padding:16px;border-radius:var(--r-md);
+  background:var(--glass-bg);border:1px solid var(--glass-border);
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  box-shadow:var(--glass-shadow-inner);
+  margin-bottom:10px;
+}
+.review-head{display:flex;gap:12px;align-items:center;margin-bottom:10px}
+.review-avatar{
+  width:38px;height:38px;border-radius:12px;
+  background:linear-gradient(135deg, var(--accent-hi), var(--accent-lo));
+  display:grid;place-items:center;color:#1a1208;
+  font-family:var(--font-serif);font-style:italic;font-size:18px;
+  overflow:hidden;flex-shrink:0;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.2);
+}
+.review-avatar img{width:100%;height:100%;object-fit:cover}
+.review-name{font-weight:500;font-size:13.5px;letter-spacing:-.005em}
+.review-date{
+  font-family:var(--font-mono);font-size:10px;
+  color:var(--text-3);letter-spacing:.04em;margin-top:2px;
+}
+.review-stars{display:flex;gap:2px;margin-left:auto}
+.review-stars svg{width:13px;height:13px}
+.review-body{font-size:13.5px;color:var(--text-2);line-height:1.65}
+
+.stars-input{display:flex;gap:6px}
+.stars-input button{
+  color:var(--text-3);padding:4px;
+  transition:transform var(--t-fast) var(--ease-spring), color var(--t-fast);
+}
+.stars-input button:hover{transform:scale(1.15)}
+.stars-input button svg{width:26px;height:26px;stroke-width:1.5}
+.stars-input button.on{color:var(--accent)}
+
+/* ============================================================
+   DOWNLOAD BUTTON
+   ============================================================ */
+.download-btn{position:relative;overflow:hidden}
+.download-btn .progress-bar{
+  position:absolute;left:0;bottom:0;height:3px;
+  background:currentColor;transition:width var(--t-fast);opacity:.7;
+}
+.download-btn.done{
+  background:color-mix(in srgb, var(--success) 15%, transparent);
+  color:var(--success);
+  border-color:color-mix(in srgb, var(--success) 35%, transparent);
+  box-shadow:none;
+}
+.download-btn.err{
+  background:color-mix(in srgb, var(--danger) 15%, transparent);
+  color:var(--danger);
+  border-color:color-mix(in srgb, var(--danger) 35%, transparent);
+  box-shadow:none;
+}
+
+/* ============================================================
+   EMPTY / LOADING
+   ============================================================ */
+.empty{text-align:center;padding:60px 24px;color:var(--text-3)}
+.empty svg{
+  width:44px;height:44px;margin:0 auto 18px;
+  opacity:.4;stroke-width:1.4;
+}
+.empty h3{
+  font-family:var(--font-serif);font-style:italic;font-weight:400;
+  font-size:20px;letter-spacing:-.01em;color:var(--text-1);margin-bottom:8px;
+}
+.empty p{margin:0;font-size:13.5px;line-height:1.6;max-width:44ch;margin:0 auto}
+
+.loader{
+  width:22px;height:22px;
+  border:2.5px solid var(--glass-border-strong);
+  border-top-color:var(--accent);
+  border-radius:50%;
+  animation:spin .8s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ============================================================
+   SPLASH
+   ============================================================ */
+#splash{
+  position:fixed;inset:0;z-index:var(--z-splash);
+  background:var(--bg-0);
+  display:grid;place-items:center;
+  transition:opacity 700ms var(--ease-out), visibility 700ms;
+}
+#splash.hide{opacity:0;visibility:hidden;pointer-events:none}
+.splash-inner{display:flex;flex-direction:column;align-items:center;gap:22px}
+.splash-mark{
+  width:64px;height:64px;border-radius:18px;
+  background:linear-gradient(135deg, var(--accent-hi), var(--accent-lo));
+  display:grid;place-items:center;
+  font-family:var(--font-serif);font-style:italic;
+  font-size:38px;line-height:1;color:#1a1208;
+  box-shadow:0 20px 60px -10px var(--accent-glow),
+             inset 0 0 0 1px rgba(255,255,255,.2);
+  animation:splashIn 700ms var(--ease-spring) both,
+            splashFloat 2.6s ease-in-out infinite 700ms;
+  position:relative;overflow:hidden;
+}
+.splash-mark::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(140deg, rgba(255,255,255,.45), transparent 45%);
+  pointer-events:none;
+}
+@keyframes splashIn{from{opacity:0;transform:scale(.7)}to{opacity:1;transform:scale(1)}}
+@keyframes splashFloat{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-6px)}
+}
+.splash-word{
+  font-family:var(--font-mono);font-size:10px;
+  letter-spacing:.4em;text-transform:uppercase;
+  color:var(--text-3);
+  animation:fadeUp 700ms var(--ease-out) 300ms both;
+}
+.splash-bar{
+  width:140px;height:2px;background:var(--glass-border);border-radius:2px;
+  overflow:hidden;margin-top:6px;
+  animation:fadeUp 700ms var(--ease-out) 500ms both;
+}
+.splash-bar::after{
+  content:"";display:block;height:100%;width:40%;
+  background:var(--accent);border-radius:2px;
+  animation:splashSlide 1.4s var(--ease-out) infinite;
+}
+@keyframes splashSlide{
+  0%{transform:translateX(-120%)}
+  100%{transform:translateX(300%)}
+}
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(8px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+/* ============================================================
+   ANNOUNCEMENT
+   ============================================================ */
+.announce{
+  display:flex;align-items:center;gap:14px;
+  padding:14px 16px;border-radius:var(--r-md);
+  margin-bottom:18px;
+  background:linear-gradient(135deg,
+              var(--accent-soft),
+              color-mix(in srgb, var(--accent) 4%, transparent));
+  border:1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  animation:fadeUp var(--t-med) var(--ease-out) both;
+}
+.announce svg{width:17px;height:17px;color:var(--accent);flex-shrink:0;stroke-width:1.75}
+.announce-body{flex:1;font-size:13px;line-height:1.5}
+.announce-body b{color:var(--text-1);font-weight:500}
+.announce-close{
+  color:var(--text-3);font-size:20px;line-height:1;
+  padding:4px 8px;border-radius:8px;
+  transition:background var(--t-fast), color var(--t-fast);
+}
+.announce-close:hover{background:var(--glass-bg-2);color:var(--text-1)}
+
+/* ============================================================
+   CATEGORIES / CHIPS
+   ============================================================ */
+.chip{
+  padding:8px 14px;border-radius:var(--r-pill);
+  font-family:var(--font-mono);font-size:11px;font-weight:500;
+  letter-spacing:.06em;text-transform:uppercase;
+  background:var(--glass-bg);border:1px solid var(--glass-border);
+  color:var(--text-2);cursor:pointer;
+  transition:all var(--t-fast);
+  white-space:nowrap;
+}
+.chip:hover{color:var(--text-1);border-color:var(--glass-border-strong)}
+.chip.active{
+  background:var(--accent);color:#1a1208;
+  border-color:var(--accent);
+  box-shadow:0 4px 16px -4px var(--accent-glow);
+}
+.chip-row{
+  display:flex;gap:8px;overflow-x:auto;padding:2px 2px 14px;
+  scrollbar-width:none;
+}
+.chip-row::-webkit-scrollbar{display:none}
+
+.cat-grid{
+  display:grid;grid-template-columns:repeat(auto-fill, minmax(148px,1fr));
+  gap:12px;
+}
+.cat-card{
+  padding:18px;border-radius:var(--r-md);
+  background:var(--glass-bg);border:1px solid var(--glass-border);
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  box-shadow:var(--glass-shadow-inner);
+  display:flex;flex-direction:column;gap:12px;cursor:pointer;
+  transition:all var(--t-med);
+}
+.cat-card:hover{
+  background:var(--glass-bg-2);border-color:var(--glass-border-strong);
+  transform:translateY(-2px);box-shadow:var(--glass-shadow-inner), var(--sh-2);
+}
+.cat-icon{
+  width:42px;height:42px;border-radius:11px;
+  background:var(--accent-soft);display:grid;place-items:center;
+  color:var(--accent);
+  border:1px solid color-mix(in srgb, var(--accent) 22%, transparent);
+}
+.cat-icon svg{width:20px;height:20px;stroke-width:1.6}
+.cat-name{font-weight:500;font-size:13.5px;letter-spacing:-.005em}
+.cat-count{
+  font-family:var(--font-mono);font-size:10px;
+  color:var(--text-3);letter-spacing:.06em;
+}
+
+/* ============================================================
+   PROFILE
+   ============================================================ */
+.profile-head{
+  display:flex;gap:18px;align-items:center;
+  padding:22px;border-radius:var(--r-lg);margin-bottom:20px;
+  background:var(--glass-bg);border:1px solid var(--glass-border);
+  backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);
+  box-shadow:var(--glass-shadow-inner);
+}
+.profile-avatar{
+  width:76px;height:76px;border-radius:22px;
+  background:linear-gradient(135deg, var(--accent-hi), var(--accent-lo));
+  display:grid;place-items:center;color:#1a1208;
+  font-family:var(--font-serif);font-style:italic;font-size:34px;
+  overflow:hidden;flex-shrink:0;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.2), var(--sh-2);
+}
+.profile-avatar img{width:100%;height:100%;object-fit:cover}
+.profile-name{
+  font-family:var(--font-serif);font-style:italic;font-weight:400;
+  font-size:24px;letter-spacing:-.015em;margin-bottom:4px;
+}
+.profile-email{
+  font-family:var(--font-mono);font-size:11.5px;color:var(--text-3);
+  letter-spacing:.02em;
+}
+.verified{
+  display:inline-flex;align-items:center;gap:5px;
+  font-family:var(--font-mono);font-size:10px;font-weight:500;
+  letter-spacing:.08em;text-transform:uppercase;
+  color:var(--success);margin-top:6px;
+}
+.verified svg{width:12px;height:12px}
+
+.list-item{
+  display:flex;align-items:center;gap:14px;
+  padding:15px 18px;border-radius:var(--r-sm);
+  background:var(--glass-bg);border:1px solid var(--glass-border);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  box-shadow:var(--glass-shadow-inner);
+  margin-bottom:8px;cursor:pointer;
+  transition:all var(--t-fast);
+}
+.list-item:hover{
+  background:var(--glass-bg-2);border-color:var(--glass-border-strong);
+  transform:translateX(2px);
+}
+.list-item svg:first-child{
+  width:19px;height:19px;color:var(--accent);flex-shrink:0;stroke-width:1.7;
+}
+.list-item .txt{flex:1;font-size:14px;font-weight:400}
+.list-item .arrow{
+  color:var(--text-3);width:16px;height:16px;
+  transition:transform var(--t-fast);
+}
+.list-item:hover .arrow{transform:translateX(3px)}
+
+/* Utility */
+.row{display:flex;align-items:center;gap:10px}
+.flex-1{flex:1}
+.muted{color:var(--text-3)}
+.hidden{display:none!important}
+
+/* Skip link */
+.skip{
+  position:absolute;left:-9999px;top:8px;
+  padding:8px 14px;border-radius:8px;
+  background:var(--accent);color:#1a1208;
+  font-weight:500;z-index:9999;
+}
+.skip:focus{left:8px}
+
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{
+    animation-duration:.01ms!important;
+    animation-iteration-count:1!important;
+    transition-duration:.01ms!important;
+  }
+}
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@600;800&display=swap" rel="stylesheet" />
+<style id="tg-theme">
+/* ============================================================
+   TOKYO GHOUL THEME LAYER (additive) — red / black / white
+   Sits on top of the Selvo design system. Nothing above is removed.
+   ============================================================ */
+html[data-theme="dark"]{
+  --bg-0:#050304; --bg-1:#0c0507; --bg-2:#130709; --bg-3:#1c0b0e;
+  --glass-bg:rgba(22,6,9,.58); --glass-bg-2:rgba(34,8,13,.70); --glass-bg-3:rgba(52,10,18,.80);
+  --glass-border:rgba(255,40,64,.18); --glass-border-strong:rgba(255,40,64,.46);
+  --glass-highlight:rgba(255,90,110,.22);
+  --glass-shadow-inner:inset 0 1px 0 rgba(255,120,135,.10), inset 0 -1px 0 rgba(0,0,0,.6);
+  --text-1:#f6f2ee; --text-2:#c9bdbb; --text-3:#8f7f81; --text-4:#4d3a3e;
+  --accent:#e3122c; --accent-hi:#ff3d52; --accent-lo:#8e0014;
+  --accent-soft:rgba(227,18,44,.15); --accent-glow:rgba(227,18,44,.50);
+  --success:#9fd8b0; --warn:#ffc66b; --danger:#ff5a6e;
+  --sh-2:0 10px 30px rgba(0,0,0,.6), 0 0 0 1px rgba(227,18,44,.08);
+  --sh-3:0 28px 70px rgba(0,0,0,.7), 0 0 40px -12px rgba(227,18,44,.35);
+  --tg-card-a:rgba(46,8,15,.86); --tg-card-b:rgba(12,4,6,.92);
+  --tg-nav-a:rgba(32,6,11,.90); --tg-nav-b:rgba(8,3,5,.94);
+  --font-serif:'Shippori Mincho B1','Noto Serif JP',Georgia,serif;
+}
+html[data-theme="light"]{
+  --bg-0:#f1ece6; --bg-1:#e8e1d9; --bg-2:#fbf8f4; --bg-3:#f4efe9;
+  --glass-bg:rgba(255,255,255,.62); --glass-bg-2:rgba(255,255,255,.78); --glass-bg-3:rgba(255,255,255,.9);
+  --glass-border:rgba(120,0,15,.16); --glass-border-strong:rgba(160,0,22,.40);
+  --text-1:#14080a; --text-2:#4a3235; --text-3:#85696c; --text-4:#cdb9bb;
+  --accent:#c8001e; --accent-hi:#e3122c; --accent-lo:#7d0012;
+  --accent-soft:rgba(200,0,30,.11); --accent-glow:rgba(200,0,30,.30);
+  --danger:#c8001e;
+  --tg-card-a:rgba(255,255,255,.92); --tg-card-b:rgba(247,238,236,.95);
+  --tg-nav-a:rgba(255,255,255,.94); --tg-nav-b:rgba(244,234,232,.96);
+  --font-serif:'Shippori Mincho B1','Noto Serif JP',Georgia,serif;
+}
+::selection{background:var(--accent);color:#fff}
+body{background:var(--bg-0)}
+
+/* ---------- Background stack: video / mist / kanji / embers ---------- */
+#tgBg{position:fixed;inset:0;z-index:0;overflow:hidden;background:var(--bg-0);pointer-events:none}
+#tgBg .tg-mist{
+  position:absolute;inset:-20%;
+  background:
+    radial-gradient(40% 36% at 18% 22%, rgba(227,18,44,.30), transparent 70%),
+    radial-gradient(46% 40% at 86% 78%, rgba(150,0,20,.34), transparent 70%),
+    radial-gradient(30% 26% at 62% 8%, rgba(255,255,255,.05), transparent 70%);
+  animation:tgMist 22s ease-in-out infinite alternate;
+}
+html[data-theme="light"] #tgBg .tg-mist{opacity:.55}
+@keyframes tgMist{from{transform:translate3d(-3%,-2%,0) scale(1)}to{transform:translate3d(4%,3%,0) scale(1.12)}}
+#tgBg .tg-kanji{
+  position:absolute;right:-2vw;top:6vh;writing-mode:vertical-rl;
+  font-family:var(--font-serif);font-weight:800;line-height:1;
+  font-size:min(52vw,560px);color:transparent;
+  -webkit-text-stroke:1.5px rgba(227,18,44,.20);
+  transform:rotate(-5deg);animation:tgKanji 14s ease-in-out infinite alternate;
+  user-select:none;
+}
+@keyframes tgKanji{from{transform:rotate(-5deg) translateY(0)}to{transform:rotate(-3deg) translateY(-18px)}}
+#tgVideo{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  opacity:0;transition:opacity 1.2s ease;background:#000;
+}
+#tgBg.has-video #tgVideo{opacity:1}
+#tgBg .tg-tint{
+  position:absolute;inset:0;opacity:0;transition:opacity .6s ease;
+  background:linear-gradient(180deg,#050304 0%,#2a0008 100%);
+}
+#tgBg.has-video .tg-tint{opacity:var(--tg-dim,.6)}
+html[data-theme="light"] #tgBg .tg-tint{background:linear-gradient(180deg,#f1ece6,#f6dcdc)}
+#tgBg.has-video .tg-mist,#tgBg.has-video .tg-kanji{opacity:.35}
+#tgBg .tg-vig{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 40%,transparent 38%,rgba(0,0,0,.72) 100%)}
+html[data-theme="light"] #tgBg .tg-vig{background:radial-gradient(ellipse at 50% 40%,transparent 50%,rgba(120,0,15,.18) 100%)}
+#tgEmbers{position:absolute;inset:0;width:100%;height:100%}
+#tgBg.tg-no-embers #tgEmbers{display:none}
+body::before{display:none}
+
+/* ---------- Typography ---------- */
+.display,.section-title,.hero-title,.brand-name,.sheet-title,.detail-hero h1{
+  font-style:normal!important;font-weight:800!important;letter-spacing:-.01em;
+}
+.section-title{font-size:26px;position:relative;padding-left:16px}
+.section-title::before{
+  content:"";position:absolute;left:0;top:.1em;bottom:.1em;width:5px;
+  background:linear-gradient(var(--accent-hi),var(--accent-lo));
+  transform:skewX(-14deg);box-shadow:0 0 16px var(--accent-glow);
+}
+.kicker,.section-sub{color:var(--text-3)}
+.section-link{color:var(--accent-hi)}
+html[data-theme="light"] .section-link{color:var(--accent)}
+
+/* ---------- Top bar / brand ---------- */
+.topbar{border-bottom:1px solid var(--glass-border)}
+html .brand-mark{
+  background:linear-gradient(135deg,var(--accent-hi),var(--accent-lo));
+  color:#fff;border-radius:4px 12px 4px 12px;font-style:normal;font-weight:800;
+  box-shadow:0 0 22px -2px var(--accent-glow), inset 0 0 0 1px rgba(255,255,255,.2);
+  animation:tgPulseGlow 3.2s ease-in-out infinite;
+}
+@keyframes tgPulseGlow{0%,100%{box-shadow:0 0 14px -4px var(--accent-glow),inset 0 0 0 1px rgba(255,255,255,.2)}50%{box-shadow:0 0 30px 0 var(--accent-glow),inset 0 0 0 1px rgba(255,255,255,.3)}}
+html .icon-btn{border-radius:4px 12px 4px 12px;border-color:var(--glass-border-strong)}
+html .icon-btn:hover{color:#fff;background:var(--accent);box-shadow:0 0 22px -4px var(--accent-glow)}
+
+/* ---------- Buttons / inputs ---------- */
+html .btn{border-radius:4px 14px 4px 14px}
+html .btn-primary{
+  background:linear-gradient(135deg,var(--accent-hi),var(--accent-lo));color:#fff;
+  text-shadow:0 1px 0 rgba(0,0,0,.45);
+  box-shadow:0 12px 34px -10px var(--accent-glow), inset 0 1px 0 rgba(255,255,255,.3);
+  transition:transform .25s var(--ease-out), box-shadow .25s;
+}
+html .btn-primary:hover{transform:translateY(-2px) skewX(-3deg);box-shadow:0 18px 44px -10px var(--accent-glow), inset 0 1px 0 rgba(255,255,255,.4)}
+html .btn-ghost{border-color:var(--glass-border-strong)}
+html .btn-ghost:hover{border-color:var(--accent);box-shadow:0 0 22px -8px var(--accent-glow)}
+html .chip{border-radius:3px 12px 3px 12px}
+html .chip.active{background:linear-gradient(135deg,var(--accent-hi),var(--accent-lo));color:#fff;border-color:var(--accent)}
+html .ribbon,html .review-avatar,html .profile-avatar,.skip{color:#fff}
+html .searchbar{border-radius:4px 18px 4px 18px;border-color:var(--glass-border-strong)}
+html .sheet{border-radius:6px 30px 6px 30px;border-color:var(--glass-border-strong);background:linear-gradient(160deg,var(--tg-card-a),var(--tg-card-b));
+  transform:perspective(900px) translateY(30px) rotateX(16deg) scale(.96);transform-origin:50% 100%}
+html .overlay{background:rgba(5,2,3,.78)}
+html[data-theme="light"] .overlay{background:rgba(60,0,10,.45)}
+
+/* ---------- Page entrance (3D) ---------- */
+@keyframes tgEnter{
+  from{opacity:0;transform:perspective(1100px) translate3d(0,28px,-70px) rotateX(-14deg)}
+  to{opacity:1;transform:perspective(1100px) translate3d(0,0,0) rotateX(0)}
+}
+.main>*{animation:tgEnter .8s var(--ease-out) backwards}
+.main>*:nth-child(2){animation-delay:.07s}.main>*:nth-child(3){animation-delay:.14s}
+.main>*:nth-child(4){animation-delay:.21s}.main>*:nth-child(5){animation-delay:.28s}
+.section{animation:tgEnter .85s var(--ease-out) backwards}
+.section:nth-child(2){animation-delay:.08s}.section:nth-child(3){animation-delay:.16s}
+.section:nth-child(4){animation-delay:.24s}.section:nth-child(n+5){animation-delay:.3s}
+.carousel>*,.cat-grid>*,#results>*{animation:tgEnter .7s var(--ease-out) backwards}
+.carousel>*:nth-child(1),.cat-grid>*:nth-child(1),#results>*:nth-child(1){animation-delay:.05s}
+.carousel>*:nth-child(2),.cat-grid>*:nth-child(2),#results>*:nth-child(2){animation-delay:.10s}
+.carousel>*:nth-child(3),.cat-grid>*:nth-child(3),#results>*:nth-child(3){animation-delay:.15s}
+.carousel>*:nth-child(4),.cat-grid>*:nth-child(4),#results>*:nth-child(4){animation-delay:.20s}
+.carousel>*:nth-child(5),.cat-grid>*:nth-child(5),#results>*:nth-child(5){animation-delay:.25s}
+.carousel>*:nth-child(6),.cat-grid>*:nth-child(6),#results>*:nth-child(6){animation-delay:.30s}
+.carousel>*:nth-child(n+7),.cat-grid>*:nth-child(n+7),#results>*:nth-child(n+7){animation-delay:.35s}
+
+/* ---------- 3D cards ---------- */
+html body .app-card,html body .cat-card,html body .app-row{
+  backdrop-filter:none;-webkit-backdrop-filter:none;
+  background:linear-gradient(155deg,var(--tg-card-a),var(--tg-card-b));
+  border:1px solid var(--glass-border);position:relative;
+  border-radius:4px 20px 4px 20px;
+  transform-style:preserve-3d;
+  transform:perspective(900px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));
+  transition:transform .28s var(--ease-out), box-shadow .3s, border-color .3s;
+  will-change:transform;
+}
+html body .app-card:hover,html body .cat-card:hover,html body .app-row:hover{
+  transform:perspective(900px) translateY(-8px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) scale(1.02);
+  border-color:var(--glass-border-strong);
+  box-shadow:0 34px 60px -22px rgba(0,0,0,.85), 0 0 38px -8px var(--accent-glow);
+  background:linear-gradient(155deg,var(--tg-card-a),var(--tg-card-b));
+}
+html body .app-card.tg-press,html body .cat-card.tg-press,html body .app-row.tg-press,
+html body .app-card:active,html body .cat-card:active,html body .app-row:active{
+  transform:perspective(900px) translateZ(-14px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) scale(.97);
+}
+html body .app-row:hover{transform:perspective(1100px) translateY(-4px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg))}
+html body .app-card .icon,html body .app-row .icon{
+  transform:translateZ(34px);
+  box-shadow:0 18px 26px -10px rgba(0,0,0,.85), 0 0 22px -6px var(--accent-glow);
+  border-color:var(--glass-border-strong);
+}
+html body .cat-icon{transform:translateZ(26px);background:linear-gradient(135deg,var(--accent-hi),var(--accent-lo));color:#fff;border-color:transparent;box-shadow:0 12px 22px -8px var(--accent-glow)}
+/* corner brackets */
+.app-card::after,.app-row::after,.cat-card::after{
+  content:"";position:absolute;inset:7px;pointer-events:none;opacity:.5;
+  transition:inset .3s var(--ease-out), opacity .3s;
+  --b:var(--accent-hi);
+  background:
+    linear-gradient(var(--b),var(--b)) top left/14px 2px no-repeat,
+    linear-gradient(var(--b),var(--b)) top left/2px 14px no-repeat,
+    linear-gradient(var(--b),var(--b)) bottom right/14px 2px no-repeat,
+    linear-gradient(var(--b),var(--b)) bottom right/2px 14px no-repeat;
+}
+.app-card:hover::after,.app-row:hover::after,.cat-card:hover::after{inset:3px;opacity:1}
+
+/* ---------- Hero ---------- */
+html body .hero{
+  border-radius:6px 36px 6px 36px;border:1px solid var(--glass-border-strong);
+  box-shadow:var(--sh-3);
+  transform:perspective(1200px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));
+  transition:transform .35s var(--ease-out);
+}
+.hero::after{
+  content:"喰種";position:absolute;right:16px;top:10px;z-index:2;pointer-events:none;
+  writing-mode:vertical-rl;font-family:var(--font-serif);font-weight:800;
+  font-size:clamp(54px,11vw,96px);line-height:1;color:transparent;
+  -webkit-text-stroke:1.5px rgba(255,255,255,.55);
+  filter:drop-shadow(0 0 10px rgba(227,18,44,.85));
+}
+html body .hero-slide::before{
+  background:
+    linear-gradient(180deg,rgba(5,3,4,.20) 8%,rgba(5,3,4,.94) 100%),
+    linear-gradient(100deg,rgba(130,0,18,.62),transparent 62%);
+}
+html body .hero-title{font-size:clamp(34px,6.2vw,60px);line-height:1.04;text-shadow:0 0 30px rgba(227,18,44,.55);color:#fff}
+.hero-title:hover{animation:tgGlitch .5s steps(2) 1}
+@keyframes tgGlitch{
+  0%{text-shadow:3px 0 var(--accent-hi),-3px 0 #fff}
+  50%{text-shadow:-3px 0 var(--accent-hi),3px 0 #fff;transform:translateX(2px)}
+  100%{text-shadow:0 0 30px rgba(227,18,44,.55)}
+}
+html body .hero-badge{
+  background:var(--accent);color:#fff;border:0;border-radius:2px;transform:skewX(-10deg);
+  box-shadow:0 0 20px -4px var(--accent-glow);
+}
+html body .hero-dot.active{background:var(--accent-hi);box-shadow:0 0 14px var(--accent-glow)}
+
+/* ---------- Navigation ---------- */
+html body .bottom-nav{
+  left:10px;right:10px;bottom:calc(10px + env(safe-area-inset-bottom));
+  padding:8px;border:1px solid var(--glass-border-strong);
+  border-radius:6px 26px 6px 26px;
+  background:linear-gradient(180deg,var(--tg-nav-a),var(--tg-nav-b));
+  box-shadow:0 22px 50px -10px rgba(0,0,0,.8),0 0 34px -10px var(--accent-glow),inset 0 1px 0 rgba(255,120,135,.15);
+  transform:perspective(700px) rotateX(6deg);transform-origin:50% 100%;
+}
+html body .nav-item{border-radius:4px 14px 4px 14px}
+html body .nav-item.active{
+  color:#fff;background:linear-gradient(180deg,rgba(227,18,44,.6),rgba(227,18,44,.14));
+  box-shadow:0 0 26px -4px var(--accent-glow),inset 0 0 0 1px rgba(255,80,100,.5);
+}
+html[data-theme="light"] body .nav-item.active{color:var(--accent-lo)}
+html body .side-item.active{
+  background:linear-gradient(90deg,rgba(227,18,44,.38),transparent);color:#fff;
+  box-shadow:inset 3px 0 0 var(--accent),0 0 24px -10px var(--accent-glow);
+  transform:translateX(4px);
+}
+html[data-theme="light"] body .side-item.active{color:var(--accent-lo)}
+html body .side-item{transition:transform .25s var(--ease-out),background .2s,color .2s}
+html body .side-nav{border-right:1px solid var(--glass-border-strong)}
+@media(max-width:899px){.hero::after{font-size:60px}}
+
+/* ---------- Slash page transition ---------- */
+#tgSlash{position:fixed;inset:0;z-index:300;pointer-events:none;overflow:hidden}
+#tgSlash i{position:absolute;top:-25%;bottom:-25%;left:-170%;width:70%;transform:skewX(-18deg);visibility:hidden}
+#tgSlash.go i{visibility:visible}
+#tgSlash i:nth-child(1){background:linear-gradient(90deg,#050304 0%,#e3122c 70%,#fff 78%,#e3122c 80%)}
+#tgSlash i:nth-child(2){background:#050304;width:60%}
+#tgSlash.go i:nth-child(1){animation:tgSwipe .6s cubic-bezier(.7,0,.2,1) both}
+#tgSlash.go i:nth-child(2){animation:tgSwipe .6s cubic-bezier(.7,0,.2,1) .07s both}
+@keyframes tgSwipe{from{left:-90%}to{left:140%}}
+
+/* ---------- Splash: red eye ---------- */
+#splash{background:radial-gradient(circle at 50% 42%,#2b0008 0%,#050304 64%)}
+#splash.hide{transition-delay:1.15s}
+.splash-mark{display:none}
+.tg-eye{width:min(64vw,290px);height:auto;filter:drop-shadow(0 0 34px rgba(227,18,44,.7));animation:tgJitter 3.4s steps(1) infinite 1.4s}
+.tg-eye .tg-lid{transform-origin:100px 70px;animation:tgOpen 1.05s .15s cubic-bezier(.2,.8,.2,1) both}
+.tg-eye .tg-iris{transform-origin:100px 70px;animation:tgIris 2.2s ease-in-out 1.1s infinite}
+.tg-eye .tg-veins{animation:tgVein 1.6s ease-in-out 1s infinite alternate}
+@keyframes tgOpen{from{transform:scaleY(.02)}60%{transform:scaleY(1.08)}to{transform:scaleY(1)}}
+@keyframes tgIris{0%,100%{transform:scale(1)}50%{transform:scale(1.09)}}
+@keyframes tgVein{from{opacity:.35}to{opacity:.95}}
+@keyframes tgJitter{0%,92%,100%{transform:none}93%{transform:translateX(-4px) skewX(6deg)}95%{transform:translateX(5px)}97%{transform:translateX(-2px) skewX(-5deg)}}
+.tg-splash-kanji{font-family:var(--font-serif);font-weight:800;font-size:40px;letter-spacing:.3em;margin-right:-.3em;color:#fff;text-shadow:0 0 22px var(--accent-glow);animation:fadeUp .8s var(--ease-out) .7s both}
+#splash .splash-word{color:var(--text-2)}
+#splash .splash-bar::after{background:var(--accent-hi)}
+
+/* ---------- Background video sheet ---------- */
+.tg-preview{
+  display:flex;align-items:center;justify-content:center;text-align:center;
+  min-height:84px;padding:16px;margin-bottom:16px;border-radius:4px 16px 4px 16px;
+  border:1px dashed var(--glass-border-strong);color:var(--text-2);font-size:13px;line-height:1.5;
+  background:linear-gradient(135deg,var(--accent-soft),transparent);word-break:break-all;
+}
+.tg-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+.tg-row .btn{flex:1;min-width:140px}
+.tg-toggle{display:flex;align-items:center;gap:10px;font-size:14px;margin:0 0 14px;cursor:pointer}
+.tg-toggle input,.tg-range{accent-color:var(--accent)}
+.tg-range{width:100%;margin:2px 0 4px}
+#tgMsg{min-height:20px}
+.tg-help{font-size:12px;color:var(--text-3);line-height:1.5;margin:0 0 16px}
+</style>
+</head>
+<body>
+<!-- ===== TOKYO GHOUL THEME LAYER: background, slash transition, video settings ===== -->
+<div id="tgBg" aria-hidden="true">
+  <video id="tgVideo" muted loop playsinline autoplay preload="auto"></video>
+  <div class="tg-mist"></div>
+  <div class="tg-kanji">喰種</div>
+  <div class="tg-tint"></div>
+  <div class="tg-vig"></div>
+  <canvas id="tgEmbers"></canvas>
+</div>
+<div id="tgSlash" aria-hidden="true"><i></i><i></i></div>
+
+<div class="overlay" id="tgVideoOverlay">
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="tgSheetTitle">
+    <div class="sheet-head">
+      <div class="sheet-title" id="tgSheetTitle">Background video</div>
+      <button class="icon-btn" id="tgVideoClose" aria-label="Close"><i data-lucide="x"></i></button>
+    </div>
+    <div class="tg-preview" id="tgPreview">No video yet. Using the default Tokyo mist.</div>
+    <div class="tg-row">
+      <button class="btn btn-primary" id="tgPick"><i data-lucide="upload"></i><span>Choose video</span></button>
+      <button class="btn btn-danger" id="tgRemove"><i data-lucide="trash-2"></i><span>Remove</span></button>
+    </div>
+    <input type="file" id="tgFile" accept="video/*" hidden />
+    <div class="field">
+      <label for="tgUrl">Or paste a direct video link (.mp4 / .webm)</label>
+      <input id="tgUrl" type="url" inputmode="url" placeholder="https://example.com/video.mp4" autocomplete="off" />
+    </div>
+    <div class="tg-row"><button class="btn btn-ghost" id="tgUrlApply"><i data-lucide="link"></i><span>Use link</span></button></div>
+    <p class="tg-help">YouTube pages can't play here. Use a video file or a direct .mp4 link. The video is muted and loops.</p>
+    <div class="field">
+      <label for="tgDim">Darkness <span id="tgDimVal"></span></label>
+      <input class="tg-range" type="range" id="tgDim" min="20" max="90" value="60" />
+    </div>
+    <label class="tg-toggle"><input type="checkbox" id="tgOn" checked /> Show background video</label>
+    <label class="tg-toggle"><input type="checkbox" id="tgEmbersToggle" checked /> Floating embers</label>
+    <div class="form-error" id="tgMsg" role="status"></div>
+  </div>
+</div>
+
+
+<a href="#main" class="skip">Skip to content</a>
+
+<!-- ============ SPLASH ============ -->
+<div id="splash">
+  <div class="splash-inner">
+    <div class="splash-mark">P</div>
+    <div class="splash-word">Selvo Webstore</div>
+    <div class="splash-bar"></div>
+  </div>
+</div>
+
+<!-- ============ APP SHELL ============ -->
+<div class="app">
+  <aside class="side-nav">
+    <div class="brand">
+      <div class="brand-mark">S</div>
+      <span class="brand-name">Selvo</span>
+    </div>
+    <div class="side-item active" data-view="home"><i data-lucide="home"></i><span>Home</span></div>
+    <div class="side-item" data-view="explore"><i data-lucide="compass"></i><span>Explore</span></div>
+    <div class="side-item" data-view="downloads"><i data-lucide="arrow-down-to-line"></i><span>Downloads</span></div>
+    <div class="side-item" data-view="favorites"><i data-lucide="bookmark"></i><span>Favorites</span></div>
+    <div class="side-item" data-view="profile"><i data-lucide="user-round"></i><span>Profile</span></div>
+    <div class="side-spacer"></div>
+    <div class="side-item" id="themeSideBtn"><i data-lucide="moon-star"></i><span>Theme</span></div>
+  </aside>
+
+  <div class="content-wrap">
+    <header class="topbar">
+      <div class="brand" style="display:none">
+        <div class="brand-mark">S</div>
+      </div>
+      <div id="greeting" class="kicker">Selvo Webstore</div>
+      <div class="topbar-spacer"></div>
+      <button class="icon-btn" id="themeBtn" aria-label="Toggle theme"><i data-lucide="moon-star"></i></button>
+      <button class="icon-btn" id="accountBtn" aria-label="Account"><i data-lucide="user-round"></i></button>
+    </header>
+
+    <main class="main" id="main"></main>
+  </div>
+</div>
+
+<nav class="bottom-nav" aria-label="Primary">
+  <div class="nav-item active" data-view="home"><i data-lucide="house"></i><span>Home</span></div>
+  <div class="nav-item" data-view="explore"><i data-lucide="compass"></i><span>Explore</span></div>
+  <div class="nav-item" data-view="downloads"><i data-lucide="arrow-down-to-line"></i><span>Downs</span></div>
+  <div class="nav-item" data-view="favorites"><i data-lucide="bookmark"></i><span>Saved</span></div>
+  <div class="nav-item" data-view="profile"><i data-lucide="user-round"></i><span>You</span></div>
+</nav>
+
+<!-- Auth modal -->
+<div class="overlay" id="authOverlay">
+  <div class="sheet">
+    <div class="sheet-head">
+      <div class="sheet-title" id="authTitle">Sign in</div>
+      <button class="icon-btn" onclick="Store.closeAuth()" aria-label="Close"><i data-lucide="x"></i></button>
+    </div>
+    <div id="authBody"></div>
+  </div>
+</div>
+
+<!-- Generic modal -->
+<div class="overlay" id="modalOverlay">
+  <div class="sheet" id="modalSheet"></div>
+</div>
+
+<div class="toasts" id="toasts"></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
+import {
+  getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword,
+  signOut, sendPasswordResetEmail, sendEmailVerification, updateProfile, setPersistence,
+  browserLocalPersistence
+} from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
+import {
+  getFirestore, collection, doc, getDoc, getDocs, setDoc, updateDoc, deleteDoc,
+  query, where, orderBy, limit, serverTimestamp, increment, runTransaction
+} from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
+
+/* ============================================================
+   FIREBASE — replace with your rotated key
+   ============================================================ */
+const firebaseConfig = {
+  apiKey: "AIzaSyDhx8XGvfrYJgEkPyp3hNJ6KLZqzo0PAkM",
+  authDomain: "render-shop-e4bd7.firebaseapp.com",
+  databaseURL: "https://render-shop-e4bd7-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "render-shop-e4bd7",
+  storageBucket: "render-shop-e4bd7.firebasestorage.app",
+  messagingSenderId: "744073462938",
+  appId: "1:744073462938:web:d6924bedbd9f3474504b23"
+};
+
+const fbApp = initializeApp(firebaseConfig);
+const auth = getAuth(fbApp);
+const db   = getFirestore(fbApp);
+setPersistence(auth, browserLocalPersistence).catch(()=>{});
+
+/* ============================================================
+   STATE
+   ============================================================ */
+const state = {
+  user: null,
+  profile: null,
+  view: "home",
+  appsCache: new Map(),
+  categories: [],
+  settings: null,
+  favorites: new Set(),
+  downloads: [],
+  recentSearches: JSON.parse(localStorage.getItem("plixo.recent") || "[]"),
+  activeAnnouncement: null
+};
+
+const $ = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
+const escapeHtml = s => String(s ?? "").replace(/[&<>"']/g, c =>
+  ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fmtBytes = b => {
+  if (!b || b <= 0) return "—";
+  const u = ["B","KB","MB","GB"]; let i = 0, n = b;
+  while (n >= 1024 && i < u.length-1) { n /= 1024; i++; }
+  return `${n.toFixed(n < 10 ? 1 : 0)} ${u[i]}`;
+};
+const fmtNum = n => {
+  n = Number(n || 0);
+  if (n >= 1e6) return (n/1e6).toFixed(1)+"M";
+  if (n >= 1e3) return (n/1e3).toFixed(1)+"K";
+  return String(n);
+};
+const fmtDate = ts => {
+  if (!ts) return "—";
+  const d = ts.toDate ? ts.toDate() : new Date(ts);
+  return d.toLocaleDateString(undefined, { year:"numeric", month:"short", day:"numeric" });
+};
+const timeAgo = ts => {
+  if (!ts) return "";
+  const d = ts.toDate ? ts.toDate() : new Date(ts);
+  const s = (Date.now() - d.getTime())/1000;
+  if (s < 60) return "just now";
+  if (s < 3600) return Math.floor(s/60)+"m ago";
+  if (s < 86400) return Math.floor(s/3600)+"h ago";
+  if (s < 2592000) return Math.floor(s/86400)+"d ago";
+  return fmtDate(ts);
+};
+
+/* ============================================================
+   TOASTS
+   ============================================================ */
+function toast(msg, type = "info") {
+  const el = document.createElement("div");
+  el.className = `toast ${type === "error" ? "err" : type === "success" ? "ok" : ""}`;
+  const icon = type === "error" ? "alert-circle"
+             : type === "success" ? "check-circle-2"
+             : "info";
+  el.innerHTML = `<i data-lucide="${icon}"></i><span>${escapeHtml(msg)}</span>`;
+  $("#toasts").appendChild(el);
+  lucide.createIcons({ nodes: [el] });
+  setTimeout(() => {
+    el.style.transition = "opacity .35s, transform .35s";
+    el.style.opacity = "0";
+    el.style.transform = "translateY(10px)";
+    setTimeout(() => el.remove(), 350);
+  }, 3400);
+}
+
+/* ============================================================
+   THEME
+   ============================================================ */
+function applyTheme(t) {
+  document.documentElement.setAttribute("data-theme", t);
+  localStorage.setItem("plixo.theme", t);
+}
+applyTheme(localStorage.getItem("plixo.theme") || "dark");
+$("#themeBtn").onclick = () => {
+  const cur = document.documentElement.getAttribute("data-theme");
+  applyTheme(cur === "dark" ? "light" : "dark");
+};
+$("#themeSideBtn")?.addEventListener("click", () => $("#themeBtn").click());
+
+/* ============================================================
+   FIRESTORE HELPERS — resilient, no composite index required
+   ============================================================ */
+async function safeQuery(fn, fallback = []) {
+  try { return await fn(); }
+  catch (e) {
+    console.warn("[query]", e.message);
+    return fallback;
+  }
+}
+
+async function getStoreSettings() {
+  return safeQuery(async () => {
+    const snap = await getDoc(doc(db, "settings", "store"));
+    return snap.exists() ? snap.data() : null;
+  }, null);
+}
+
+async function getCategories() {
+  return safeQuery(async () => {
+    const snap = await getDocs(collection(db, "categories"));
+    const arr = snap.docs.map(d => ({ id: d.id, ...d.data() }))
+      .filter(c => c.active !== false);
+    arr.sort((a,b) => (a.order ?? 999) - (b.order ?? 999));
+    return arr;
+  });
+}
+
+/**
+ * Query apps WITHOUT requiring composite indexes.
+ * - fetches by status only
+ * - sorts client-side
+ * This trades a small read cost for zero index maintenance.
+ * For production at scale, add the indexes listed in the README
+ * and switch `sortClientSide` back to false.
+ */
+async function queryApps({ categoryId, search, sortBy = "trending", max = 20,
+                          featured, recommended } = {}) {
+  const constraints = [where("status", "==", "published")];
+  if (categoryId) constraints.push(where("categoryId", "==", categoryId));
+
+  const apps = await safeQuery(async () => {
+    const snap = await getDocs(query(collection(db, "apps"), ...constraints));
+    return snap.docs.map(d => ({ id: d.id, ...d.data() }));
+  });
+
+  let list = apps;
+  if (featured)      list = list.filter(a => a.isFeatured === true);
+  if (recommended)   list = list.filter(a => a.isRecommended === true);
+
+  if (search) {
+    const s = search.toLowerCase();
+    list = list.filter(a =>
+      (a.name||"").toLowerCase().includes(s) ||
+      (a.developer||"").toLowerCase().includes(s) ||
+      (a.shortDescription||"").toLowerCase().includes(s) ||
+      (a.categoryId||"").toLowerCase().includes(s)
+    );
+  }
+
+  const sorters = {
+    trending: (a,b) => (b.downloadCount||0) - (a.downloadCount||0),
+    top:      (a,b) => (b.averageRating||0) - (a.averageRating||0),
+    newest:   (a,b) => tsMillis(b.createdAt) - tsMillis(a.createdAt),
+    updated:  (a,b) => tsMillis(b.updatedAt) - tsMillis(a.updatedAt),
+    name:     (a,b) => String(a.name||"").localeCompare(String(b.name||""))
+  };
+  list.sort(sorters[sortBy] || sorters.trending);
+
+  const out = list.slice(0, max);
+  out.forEach(a => state.appsCache.set(a.id, a));
+  return out;
+}
+
+function tsMillis(ts) {
+  if (!ts) return 0;
+  if (typeof ts.toMillis === "function") return ts.toMillis();
+  if (typeof ts.toDate === "function")   return ts.toDate().getTime();
+  if (typeof ts === "number")            return ts;
+  return new Date(ts).getTime() || 0;
+}
+
+async function getAppById(id) {
+  if (state.appsCache.has(id)) return state.appsCache.get(id);
+  return safeQuery(async () => {
+    const snap = await getDoc(doc(db, "apps", id));
+    if (!snap.exists()) return null;
+    const a = { id, ...snap.data() };
+    state.appsCache.set(id, a);
+    return a;
+  }, null);
+}
+
+async function getReviews(appId) {
+  // No orderBy — avoids collection-group index requirement entirely.
+  return safeQuery(async () => {
+    const snap = await getDocs(collection(db, "apps", appId, "reviews"));
+    const arr = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    arr.sort((a,b) => tsMillis(b.createdAt) - tsMillis(a.createdAt));
+    return arr.slice(0, 50);
+  });
+}
+
+/* ============================================================
+   FAVORITES
+   ============================================================ */
+function localFavs()   { return JSON.parse(localStorage.getItem("plixo.favs") || "[]"); }
+function setLocalFavs(a){ localStorage.setItem("plixo.favs", JSON.stringify(a)); }
+
+async function loadFavorites() {
+  if (state.user) {
+    const set = await safeQuery(async () => {
+      const snap = await getDocs(collection(db, "favorites", state.user.uid, "items"));
+      return new Set(snap.docs.map(d => d.id));
+    }, new Set());
+    state.favorites = set;
+    // merge guest favorites
+    const guest = localFavs();
+    for (const id of guest) {
+      if (!state.favorites.has(id)) {
+        setDoc(doc(db, "favorites", state.user.uid, "items", id), { addedAt: serverTimestamp() })
+          .catch(()=>{});
+        state.favorites.add(id);
+      }
+    }
+    if (guest.length) localStorage.removeItem("plixo.favs");
+  } else {
+    state.favorites = new Set(localFavs());
+  }
+}
+
+async function toggleFavorite(appId) {
+  const isFav = state.favorites.has(appId);
+  if (state.user) {
+    const ref = doc(db, "favorites", state.user.uid, "items", appId);
+    try {
+      if (isFav) { await deleteDoc(ref); state.favorites.delete(appId); }
+      else       { await setDoc(ref, { addedAt: serverTimestamp() }); state.favorites.add(appId); }
+    } catch (e) {
+      toast("Couldn't update favorites", "error");
+      return isFav;
+    }
+  } else {
+    const arr = localFavs();
+    const i = arr.indexOf(appId);
+    if (i >= 0) { arr.splice(i,1); state.favorites.delete(appId); }
+    else        { arr.push(appId); state.favorites.add(appId); }
+    setLocalFavs(arr);
+  }
+  return state.favorites.has(appId);
+}
+
+/* ============================================================
+   DOWNLOADS (local history)
+   ============================================================ */
+function loadLocalDownloads() {
+  state.downloads = JSON.parse(localStorage.getItem("plixo.downloads") || "[]");
+}
+function recordDownload(app) {
+  const entry = {
+    appId: app.id,
+    name: app.name,
+    iconUrl: app.iconUrl,
+    versionName: app.versionName,
+    fileSizeBytes: app.fileSizeBytes,
+    at: Date.now()
+  };
+  state.downloads = [entry, ...state.downloads.filter(d => d.appId !== app.id)].slice(0, 100);
+  localStorage.setItem("plixo.downloads", JSON.stringify(state.downloads));
+}
+
+/* ============================================================
+   SEARCH RECENTS
+   ============================================================ */
+function pushRecentSearch(q) {
+  q = q.trim(); if (!q) return;
+  state.recentSearches = [q, ...state.recentSearches.filter(x => x !== q)].slice(0, 8);
+  localStorage.setItem("plixo.recent", JSON.stringify(state.recentSearches));
+}
+
+/* ============================================================
+   HOME
+   ============================================================ */
+async function renderHome() {
+  const main = $("#main");
+  main.innerHTML = `
+    <div style="margin-bottom:22px">
+      <div id="announceSlot"></div>
+      <div class="searchbar" id="homeSearch">
+        <i data-lucide="search" class="lead"></i>
+        <input placeholder="Search apps, games, developers…" id="homeSearchInput" aria-label="Search">
+        <kbd>⌘K</kbd>
+      </div>
+    </div>
+    <div class="skel skel-hero" id="heroSkel" style="margin-bottom:28px"></div>
+    <div id="heroSlot"></div>
+    <div id="sectionsSlot"></div>
+  `;
+  lucide.createIcons();
+
+  $("#homeSearchInput").addEventListener("keydown", e => {
+    if (e.key === "Enter") {
+      const q = e.target.value.trim();
+      if (q) { pushRecentSearch(q); navigate("explore", { search: q }); }
+    }
+  });
+
+  const settings = await getStoreSettings();
+  state.settings = settings;
+
+  if (settings?.maintenanceMode) {
+    $("#main").innerHTML = `
+      <div class="empty">
+        <i data-lucide="wrench"></i>
+        <h3>Under maintenance</h3>
+        <p>${escapeHtml(settings.maintenanceMessage || "We'll be back shortly.")}</p>
+      </div>`;
+    lucide.createIcons();
+    return;
+  }
+
+  // Announcements
+  await safeQuery(async () => {
+    const snap = await getDocs(collection(db, "announcements"));
+    const now = Date.now();
+    const active = snap.docs
+      .map(d => ({ id: d.id, ...d.data() }))
+      .filter(a => a.status === "published")
+      .sort((a,b) => tsMillis(b.createdAt) - tsMillis(a.createdAt))
+      .find(a => {
+        const start = tsMillis(a.startAt) || 0;
+        const end   = tsMillis(a.endAt)   || Infinity;
+        return start <= now && now <= end;
+      });
+    if (active && !sessionStorage.getItem("plixo.ann."+active.id)) {
+      state.activeAnnouncement = active;
+      $("#announceSlot").innerHTML = `
+        <div class="announce">
+          <i data-lucide="megaphone"></i>
+          <div class="announce-body"><b>${escapeHtml(active.title)}</b> — ${escapeHtml(active.message||"")}</div>
+          <button class="announce-close" onclick="Store.dismissAnnouncement('${active.id}')" aria-label="Dismiss">×</button>
+        </div>`;
+      lucide.createIcons();
+    }
+  });
+
+  // Hero
+  try {
+    let featured = await queryApps({ featured: true, sortBy: "trending", max: 6 });
+    if (!featured.length) featured = await queryApps({ sortBy: "trending", max: 5 });
+    renderHero(featured);
+  } catch (e) {
+    $("#heroSkel")?.remove();
+    $("#heroSlot").innerHTML = `
+      <div class="empty">
+        <i data-lucide="wifi-off"></i>
+        <h3>Couldn't load featured apps</h3>
+        <p>${escapeHtml(e.message)}</p>
+      </div>`;
+    lucide.createIcons();
+  }
+
+  // Sections
+  const sections = [
+    { title: "Editor's Choice", key: "recommended", sort: "top",      style: "card", flag: "recommended" },
+    { title: "Trending Now",    key: "trending",    sort: "trending", style: "row"  },
+    { title: "Top Rated",       key: "top",         sort: "top",      style: "card" },
+    { title: "Recently Added",  key: "new",         sort: "newest",   style: "card" },
+    { title: "Recently Updated",key: "updated",     sort: "updated",  style: "row"  }
+  ];
+  const slot = $("#sectionsSlot");
+  slot.innerHTML = sections.map(s => `
+    <section class="section" id="sec-${s.key}">
+      <div class="section-head">
+        <div>
+          <div class="section-title">${s.title}</div>
+          <div class="section-sub">Curated · Selvo</div>
+        </div>
+        <a class="section-link" data-section-link="${s.key}">See all <i data-lucide="arrow-right"></i></a>
+      </div>
+      <div class="carousel">
+        ${Array(s.style === 'row' ? 3 : 5).fill(0).map(() =>
+          s.style === 'row'
+            ? `<div class="skel skel-row"></div>`
+            : `<div class="skel skel-card"></div>`
+        ).join("")}
+      </div>
+    </section>
+  `).join("");
+  lucide.createIcons();
+
+  for (const s of sections) {
+    try {
+      const opts = { sortBy: s.sort, max: 12 };
+      if (s.flag === "recommended") opts.recommended = true;
+      let apps = await queryApps(opts);
+      if (s.flag === "recommended" && !apps.length) apps = await queryApps({ sortBy: "top", max: 12 });
+      const el = document.getElementById(`sec-${s.key}`);
+      const car = el.querySelector(".carousel");
+      car.innerHTML = apps.length
+        ? apps.map(a => s.style === "row" ? appRow(a) : appCard(a)).join("")
+        : `<div class="empty" style="padding:24px 12px"><p>Nothing here yet.</p></div>`;
+      bindCardClicks(el);
+    } catch (e) {
+      const el = document.getElementById(`sec-${s.key}`);
+      el.querySelector(".carousel").innerHTML =
+        `<div class="empty" style="padding:24px 12px"><p>${escapeHtml(e.message)}</p></div>`;
+    }
+  }
+
+  // Section "See all" → explore
+  $$("[data-section-link]").forEach(a => {
+    a.addEventListener("click", () => {
+      const key = a.dataset.sectionLink;
+      const map = {
+        recommended: { sort: "top",      recommended: true },
+        trending:    { sort: "trending" },
+        top:         { sort: "top" },
+        new:         { sort: "newest" },
+        updated:     { sort: "updated" }
+      };
+      navigate("explore", map[key] || {});
+    });
+  });
+
+  lucide.createIcons();
+}
+
+function renderHero(apps) {
+  if (!apps.length) {
+    $("#heroSkel")?.remove();
+    $("#heroSlot").innerHTML = `
+      <div class="empty" style="padding:60px 24px">
+        <i data-lucide="package-open"></i>
+        <h3>The store is empty</h3>
+        <p>No applications have been published yet. Check back soon.</p>
+      </div>`;
+    lucide.createIcons();
+    return;
+  }
+  $("#heroSkel")?.remove();
+  $("#heroSlot").innerHTML = `
+    <div class="hero" style="margin-bottom:32px">
+      <div class="hero-track" id="heroTrack">
+        ${apps.map(a => `
+          <div class="hero-slide" style="background-image:url('${escapeHtml(a.bannerUrl || a.iconUrl || '')}')">
+            <div class="hero-info">
+              <div class="hero-badge"><i data-lucide="sparkles"></i> Featured</div>
+              <h2 class="hero-title">${escapeHtml(a.name)}</h2>
+              <p class="hero-sub">${escapeHtml(a.shortDescription || a.developer || "")}</p>
+              <div class="hero-actions">
+                <button class="btn btn-primary" data-open-app="${a.id}">
+                  View details <i data-lucide="arrow-up-right"></i>
+                </button>
+                <button class="btn btn-ghost" data-download-app="${a.id}"
+                        style="color:#fff;background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.22)">
+                  <i data-lucide="arrow-down-to-line"></i> Get
+                </button>
+              </div>
+            </div>
+          </div>
+        `).join("")}
+      </div>
+      <div class="hero-dots" id="heroDots">
+        ${apps.map((_,i) => `<div class="hero-dot ${i===0?'active':''}"></div>`).join("")}
+      </div>
+    </div>
+  `;
+  lucide.createIcons();
+  const track = $("#heroTrack"), dots = $("#heroDots").children;
+  track.addEventListener("scroll", () => {
+    const idx = Math.round(track.scrollLeft / track.clientWidth);
+    [...dots].forEach((d,i) => d.classList.toggle("active", i === idx));
+  }, { passive: true });
+  // dots → scroll
+  [...dots].forEach((d,i) => d.addEventListener("click", () => {
+    track.scrollTo({ left: i * track.clientWidth, behavior: "smooth" });
+  }));
+  bindCardClicks($("#heroSlot"));
+}
+
+function appCard(a) {
+  const rating = Number(a.averageRating || 0).toFixed(1);
+  return `
+    <div class="app-card" data-app="${a.id}" tabindex="0">
+      ${a.isFeatured ? `<div class="ribbon">Top</div>` : ""}
+      <img class="icon" loading="lazy" src="${escapeHtml(a.iconUrl || '')}" alt=""
+           onerror="this.style.visibility='hidden'">
+      <div class="name">${escapeHtml(a.name)}</div>
+      <div class="dev">${escapeHtml(a.developer || "")}</div>
+      <div class="meta">
+        <i data-lucide="star" style="color:var(--accent);fill:currentColor;stroke:none"></i>
+        <span class="num">${rating}</span>
+        <span style="color:var(--text-4)">·</span>
+        <span class="num">${fmtBytes(a.fileSizeBytes)}</span>
+      </div>
+    </div>`;
+}
+
+function appRow(a) {
+  const rating = Number(a.averageRating || 0).toFixed(1);
+  return `
+    <div class="app-row" data-app="${a.id}" tabindex="0">
+      <img class="icon" loading="lazy" src="${escapeHtml(a.iconUrl||'')}" alt=""
+           onerror="this.style.visibility='hidden'">
+      <div class="info">
+        <div class="name">${escapeHtml(a.name)}</div>
+        <div class="dev">${escapeHtml(a.developer || "")}</div>
+        <div class="meta">
+          <span><i data-lucide="star" style="color:var(--accent);fill:currentColor;stroke:none"></i> <span class="num">${rating}</span></span>
+          <span><i data-lucide="arrow-down-to-line"></i> <span class="num">${fmtNum(a.downloadCount)}</span></span>
+          <span><i data-lucide="hard-drive"></i> <span class="num">${fmtBytes(a.fileSizeBytes)}</span></span>
+        </div>
+      </div>
+      <div class="install">Install</div>
+    </div>`;
+}
+
+function bindCardClicks(scope) {
+  scope.querySelectorAll("[data-app]").forEach(el => {
+    const open = () => openApp(el.dataset.app);
+    el.addEventListener("click", e => {
+      if (e.target.closest("[data-download-app]")) return;
+      open();
+    });
+    el.addEventListener("keydown", e => {
+      if (e.key === "Enter" || e.key === " ") { e.preventDefault(); open(); }
+    });
+    // Spotlight follow
+    el.addEventListener("pointermove", e => {
+      const r = el.getBoundingClientRect();
+      el.style.setProperty("--mx", ((e.clientX - r.left)/r.width*100) + "%");
+      el.style.setProperty("--my", ((e.clientY - r.top)/r.height*100) + "%");
+    });
+  });
+  scope.querySelectorAll("[data-open-app]").forEach(el => {
+    el.addEventListener("click", e => { e.stopPropagation(); openApp(el.dataset.openApp); });
+  });
+  scope.querySelectorAll("[data-download-app]").forEach(el => {
+    el.addEventListener("click", e => { e.stopPropagation(); startDownload(el.dataset.downloadApp, e.currentTarget); });
+  });
+}
+
+/* ============================================================
+   EXPLORE
+   ============================================================ */
+async function renderExplore(opts = {}) {
+  const main = $("#main");
+  const cats = state.categories.length ? state.categories
+             : (state.categories = await getCategories());
+  const activeCat = opts.categoryId || "";
+
+  main.innerHTML = `
+    <div style="margin-bottom:18px">
+      <div class="searchbar">
+        <i data-lucide="search" class="lead"></i>
+        <input placeholder="Search applications…" id="exploreInput" value="${escapeHtml(opts.search||"")}" aria-label="Search applications">
+        <button class="icon-btn" id="clearBtn" style="width:26px;height:26px;display:${opts.search?'grid':'none'};background:transparent;border:0" aria-label="Clear"><i data-lucide="x"></i></button>
+      </div>
+    </div>
+    <div class="chip-row" id="catChips">
+      <div class="chip ${!activeCat?'active':''}" data-cat="">All</div>
+      ${cats.map(c => `<div class="chip ${activeCat===c.id?'active':''}" data-cat="${c.id}">${escapeHtml(c.name)}</div>`).join("")}
+    </div>
+    <div class="chip-row" id="sortChips">
+      <div class="chip active" data-sort="trending">Trending</div>
+      <div class="chip" data-sort="top">Top</div>
+      <div class="chip" data-sort="newest">New</div>
+      <div class="chip" data-sort="updated">Updated</div>
+      <div class="chip" data-sort="name">A–Z</div>
+    </div>
+    <div id="resultsCount" class="kicker" style="margin:4px 2px 14px"></div>
+    <div id="results" class="carousel" style="flex-wrap:wrap;overflow:visible;gap:14px"></div>
+  `;
+  lucide.createIcons();
+
+  let searchTerm = opts.search || "";
+  let categoryId = activeCat;
+  let sortBy = opts.sort || "trending";
+  let debounceTimer;
+
+  // Apply incoming sort chip
+  $$("#sortChips .chip").forEach(c =>
+    c.classList.toggle("active", c.dataset.sort === sortBy));
+
+  async function runSearch() {
+    const res = $("#results");
+    res.innerHTML = Array(8).fill(`<div class="skel skel-card"></div>`).join("");
+    const apps = await queryApps({
+      categoryId: categoryId || undefined,
+      search: searchTerm || undefined,
+      sortBy,
+      max: 60,
+      recommended: opts.recommended || undefined
+    });
+    $("#resultsCount").textContent =
+      `${apps.length} ${apps.length === 1 ? "result" : "results"}`;
+    res.innerHTML = apps.length
+      ? apps.map(a => appCard(a)).join("")
+      : `<div class="empty" style="grid-column:1/-1;width:100%">
+           <i data-lucide="search-x"></i>
+           <h3>No results</h3>
+           <p>Try a different search term or category.</p>
+         </div>`;
+    bindCardClicks(res);
+    lucide.createIcons();
+  }
+
+  $("#exploreInput").addEventListener("input", e => {
+    searchTerm = e.target.value;
+    $("#clearBtn").style.display = searchTerm ? "grid" : "none";
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(runSearch, 280);
+  });
+  $("#exploreInput").addEventListener("keydown", e => {
+    if (e.key === "Enter") pushRecentSearch(searchTerm);
+  });
+  $("#clearBtn").onclick = () => {
+    $("#exploreInput").value = "";
+    searchTerm = "";
+    $("#clearBtn").style.display = "none";
+    runSearch();
+  };
+  $("#catChips").addEventListener("click", e => {
+    const chip = e.target.closest(".chip"); if (!chip) return;
+    categoryId = chip.dataset.cat;
+    $$("#catChips .chip").forEach(c => c.classList.toggle("active", c === chip));
+    runSearch();
+  });
+  $("#sortChips").addEventListener("click", e => {
+    const chip = e.target.closest(".chip"); if (!chip) return;
+    sortBy = chip.dataset.sort;
+    $$("#sortChips .chip").forEach(c => c.classList.toggle("active", c === chip));
+    runSearch();
+  });
+
+  runSearch();
+}
+
+/* ============================================================
+   APP DETAILS
+   ============================================================ */
+async function openApp(id) {
+  const sheet = $("#modalSheet");
+  $("#modalOverlay").classList.add("open");
+  sheet.innerHTML = `
+    <div style="padding:60px 0;text-align:center">
+      <div class="loader" style="margin:0 auto 16px"></div>
+      <div class="kicker">Loading</div>
+    </div>`;
+  try {
+    const app = await getAppById(id);
+    if (!app) throw new Error("Application not found.");
+    const reviews = await getReviews(id);
+    const fav = state.favorites.has(id);
+    const avg = Number(app.averageRating || 0);
+    const dist = [5,4,3,2,1].map(s => ({
+      star: s,
+      count: reviews.filter(r => r.rating === s).length
+    }));
+
+    sheet.innerHTML = `
+      <div class="sheet-head">
+        <div class="sheet-title">Details</div>
+        <button class="icon-btn" onclick="Store.closeModal()" aria-label="Close"><i data-lucide="x"></i></button>
+      </div>
+
+      <div class="detail-hero">
+        <img class="icon" src="${escapeHtml(app.iconUrl||'')}" alt=""
+             onerror="this.style.visibility='hidden'">
+        <div class="info">
+          <h1>${escapeHtml(app.name)}</h1>
+          <div class="dev">${escapeHtml(app.developer || "")}</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            ${app.categoryId ? `<span class="chip">${escapeHtml(app.categoryId)}</span>` : ""}
+            ${app.versionName ? `<span class="chip">v${escapeHtml(app.versionName)}</span>` : ""}
+            ${app.isFeatured ? `<span class="chip active">Featured</span>` : ""}
+          </div>
+        </div>
+      </div>
+
+      <div class="stat-grid">
+        <div class="stat"><div class="v">${avg.toFixed(1)}</div><div class="k">Rating</div></div>
+        <div class="stat"><div class="v">${fmtNum(app.downloadCount)}</div><div class="k">Downloads</div></div>
+        <div class="stat"><div class="v">${fmtBytes(app.fileSizeBytes)}</div><div class="k">Size</div></div>
+      </div>
+
+      <div style="display:flex;gap:10px;margin-bottom:24px">
+        <button class="btn btn-primary download-btn flex-1" id="dlBtn" style="flex:2">
+          <i data-lucide="arrow-down-to-line"></i><span>Download</span>
+        </button>
+        <button class="btn btn-ghost" id="favBtn" aria-label="Favorite" style="width:48px;padding:0">
+          <i data-lucide="bookmark" style="fill:${fav ? 'currentColor' : 'none'};color:${fav ? 'var(--accent)' : 'inherit'}"></i>
+        </button>
+        <button class="btn btn-ghost" id="shareBtn" aria-label="Share" style="width:48px;padding:0">
+          <i data-lucide="share-2"></i>
+        </button>
+      </div>
+
+      ${app.shortDescription ? `<p class="desc" style="color:var(--text-1);margin-bottom:14px;font-weight:500">${escapeHtml(app.shortDescription)}</p>` : ""}
+
+      ${app.screenshots?.length ? `
+        <div class="kicker" style="margin:20px 0 12px">Screenshots</div>
+        <div class="screens">${app.screenshots.map(u => `<img src="${escapeHtml(u)}" alt="Screenshot" loading="lazy">`).join("")}</div>
+      ` : ""}
+
+      <div class="kicker" style="margin:22px 0 10px">About this app</div>
+      <p class="desc">${escapeHtml(app.description || app.shortDescription || "No description provided.")}</p>
+
+      ${app.releaseNotes ? `
+        <div class="kicker" style="margin:22px 0 10px">What's new</div>
+        <p class="desc">${escapeHtml(app.releaseNotes)}</p>
+      ` : ""}
+
+      <div class="kicker" style="margin:28px 0 12px">Ratings & reviews</div>
+      <div style="display:flex;gap:18px;align-items:center;margin-bottom:16px">
+        <div style="text-align:center;min-width:80px">
+          <div style="font-family:var(--font-serif);font-style:italic;font-size:38px;line-height:1;letter-spacing:-.02em">${avg.toFixed(1)}</div>
+          <div class="review-stars" style="justify-content:center;margin:6px 0">
+            ${[1,2,3,4,5].map(i => `<i data-lucide="star" style="color:${i <= Math.round(avg) ? 'var(--accent)' : 'var(--text-4)'};fill:${i<=Math.round(avg)?'currentColor':'none'};stroke:none"></i>`).join("")}
+          </div>
+          <div class="kicker">${reviews.length} reviews</div>
+        </div>
+        <div style="flex:1">
+          ${dist.map(d => `
+            <div style="display:flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:10.5px;margin-bottom:5px">
+              <span style="width:10px;color:var(--text-3)">${d.star}</span>
+              <div style="flex:1;height:4px;background:var(--glass-bg-2);border-radius:3px;overflow:hidden">
+                <div style="height:100%;background:var(--accent);width:${reviews.length ? (d.count/reviews.length*100) : 0}%;transition:width var(--t-slow)"></div>
+              </div>
+              <span style="width:22px;text-align:right;color:var(--text-3)">${d.count}</span>
+            </div>
+          `).join("")}
+        </div>
+      </div>
+
+      <button class="btn btn-ghost btn-block" id="writeReviewBtn" style="margin-bottom:16px">
+        <i data-lucide="pen-line"></i> Write a review
+      </button>
+
+      <div id="reviewsList">
+        ${reviews.length
+          ? reviews.map(r => reviewHtml(r, app.id)).join("")
+          : `<div class="empty" style="padding:32px 12px"><p>No reviews yet. Be the first.</p></div>`}
+      </div>
+    `;
+    lucide.createIcons();
+
+    $("#favBtn").onclick = async () => {
+      const isFav = await toggleFavorite(app.id);
+      $("#favBtn i").setAttribute("style",
+        `fill:${isFav?'currentColor':'none'};color:${isFav?'var(--accent)':'inherit'}`);
+      $("#favBtn").animate(
+        [{ transform:"scale(1)" }, { transform:"scale(1.15)" }, { transform:"scale(1)" }],
+        { duration: 320, easing: "cubic-bezier(.34,1.56,.64,1)" }
+      );
+      toast(isFav ? "Saved to favorites" : "Removed from favorites", "success");
+    };
+
+    $("#shareBtn").onclick = async () => {
+      const url = location.origin + location.pathname + "#app=" + app.id;
+      try {
+        if (navigator.share) await navigator.share({ title: app.name, text: app.shortDescription, url });
+        else { await navigator.clipboard.writeText(url); toast("Link copied", "success"); }
+      } catch {}
+    };
+
+    $("#dlBtn").onclick = (e) => startDownload(app.id, e.currentTarget);
+    $("#writeReviewBtn").onclick = () => openReviewComposer(app);
+
+    sheet.querySelectorAll("[data-del-review]").forEach(b => {
+      b.onclick = async () => {
+        if (!confirm("Delete your review?")) return;
+        await deleteDoc(doc(db, "apps", app.id, "reviews", b.dataset.delReview));
+        toast("Review deleted", "success");
+        openApp(app.id);
+      };
+    });
+  } catch (e) {
+    sheet.innerHTML = `
+      <div class="sheet-head">
+        <div class="sheet-title">Something broke</div>
+        <button class="icon-btn" onclick="Store.closeModal()"><i data-lucide="x"></i></button>
+      </div>
+      <div class="empty">
+        <i data-lucide="alert-triangle"></i>
+        <h3>Couldn't load this app</h3>
+        <p>${escapeHtml(e.message)}</p>
+      </div>`;
+    lucide.createIcons();
+  }
+}
+
+function reviewHtml(r, appId) {
+  const mine = state.user && r.uid === state.user.uid;
+  const initial = (r.userName || "?")[0].toUpperCase();
+  return `
+    <div class="review">
+      <div class="review-head">
+        <div class="review-avatar">${r.userPhoto ? `<img src="${escapeHtml(r.userPhoto)}" alt="">` : escapeHtml(initial)}</div>
+        <div>
+          <div class="review-name">${escapeHtml(r.userName || "Anonymous")}${mine ? ` <span class="muted" style="font-weight:400;font-size:11px">· you</span>` : ""}</div>
+          <div class="review-date">${timeAgo(r.createdAt)}</div>
+        </div>
+        <div class="review-stars">
+          ${[1,2,3,4,5].map(i => `<i data-lucide="star" style="color:${i<=r.rating?'var(--accent)':'var(--text-4)'};fill:${i<=r.rating?'currentColor':'none'};stroke:none"></i>`).join("")}
+        </div>
+      </div>
+      ${r.text ? `<div class="review-body">${escapeHtml(r.text)}</div>` : ""}
+      ${mine ? `<div style="margin-top:12px"><button class="chip" data-del-review="${r.id}" style="color:var(--danger);border-color:color-mix(in srgb, var(--danger) 30%, transparent)">Delete</button></div>` : ""}
+    </div>`;
+}
+
+function openReviewComposer(app) {
+  if (!state.user) { toast("Sign in to write a review", "error"); openAuth("login"); return; }
+  const sheet = $("#modalSheet");
+  let rating = 0;
+  sheet.innerHTML = `
+    <div class="sheet-head">
+      <div class="sheet-title">Write a review</div>
+      <button class="icon-btn" onclick="Store.closeModal()" aria-label="Close"><i data-lucide="x"></i></button>
+    </div>
+    <p class="kicker" style="margin:0 0 20px">${escapeHtml(app.name)}</p>
+    <div class="field">
+      <label>Your rating</label>
+      <div class="stars-input" id="starInput">
+        ${[1,2,3,4,5].map(i => `<button data-star="${i}" aria-label="${i} star"><i data-lucide="star" style="fill:none;stroke:currentColor"></i></button>`).join("")}
+      </div>
+    </div>
+    <div class="field">
+      <label>Your review (optional)</label>
+      <textarea id="reviewText" placeholder="Share your experience…" maxlength="1000"></textarea>
+    </div>
+    <div class="form-error" id="reviewErr"></div>
+    <button class="btn btn-primary btn-block" id="submitReview" style="margin-top:8px">Submit review</button>
+  `;
+  lucide.createIcons();
+
+  sheet.querySelectorAll("#starInput button").forEach(btn => {
+    btn.onclick = () => {
+      rating = Number(btn.dataset.star);
+      sheet.querySelectorAll("#starInput button").forEach(b => {
+        const on = Number(b.dataset.star) <= rating;
+        b.classList.toggle("on", on);
+        b.querySelector("i").style.fill = on ? "currentColor" : "none";
+      });
+    };
+  });
+
+  $("#submitReview").onclick = async () => {
+    if (rating < 1) { $("#reviewErr").textContent = "Please select a rating."; return; }
+    const btn = $("#submitReview");
+    btn.disabled = true; btn.textContent = "Submitting…";
+    try {
+      const reviewRef = doc(db, "apps", app.id, "reviews", state.user.uid);
+      const appRef = doc(db, "apps", app.id);
+      const text = $("#reviewText").value.trim();
+
+      await runTransaction(db, async (tx) => {
+        const appSnap = await tx.get(appRef);
+        if (!appSnap.exists()) throw new Error("App no longer exists.");
+        const appData = appSnap.data();
+        const old = await tx.get(reviewRef);
+
+        const prevRating = old.exists() ? (old.data().rating || 0) : 0;
+        const prevCount  = appData.ratingCount || 0;
+        const prevSum    = (appData.averageRating || 0) * prevCount;
+
+        let newCount = prevCount, newSum = prevSum;
+        if (old.exists()) newSum = prevSum - prevRating + rating;
+        else { newCount = prevCount + 1; newSum = prevSum + rating; }
+
+        tx.set(reviewRef, {
+          uid: state.user.uid,
+          userName: state.user.displayName || state.user.email?.split("@")[0] || "User",
+          userPhoto: state.user.photoURL || "",
+          rating,
+          text,
+          createdAt: old.exists() ? old.data().createdAt : serverTimestamp(),
+          updatedAt: serverTimestamp()
+        });
+        tx.update(appRef, {
+          averageRating: newCount ? +(newSum / newCount).toFixed(2) : 0,
+          ratingCount: newCount
+        });
+      });
+
+      toast("Review submitted", "success");
+      openApp(app.id);
+    } catch (e) {
+      $("#reviewErr").textContent = e.message || "Couldn't submit review.";
+    } finally {
+      btn.disabled = false; btn.textContent = "Submit review";
+    }
+  };
+}
+
+/* ============================================================
+   DOWNLOAD
+   ============================================================ */
+async function startDownload(appId, btnEl) {
+  const app = await getAppById(appId);
+  if (!app) { toast("App not found", "error"); return; }
+  const url = app.downloadUrl;
+  if (!url) { toast("No package available for this app.", "error"); return; }
+
+  const btn = btnEl;
+  const orig = btn.innerHTML;
+  btn.classList.add("download-btn");
+  btn.innerHTML = `<i data-lucide="loader-circle" style="animation:spin .8s linear infinite"></i><span>Preparing…</span>`;
+  lucide.createIcons({ nodes: [btn] });
+
+  try {
+    updateDoc(doc(db, "apps", appId), { downloadCount: increment(1) }).catch(()=>{});
+    recordDownload(app);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.rel = "noopener";
+    a.download = `${app.slug || app.name}.apk`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+
+    btn.classList.add("done");
+    btn.innerHTML = `<i data-lucide="check"></i><span>Download started</span>`;
+    lucide.createIcons({ nodes: [btn] });
+    toast("Download started. Finish installing in Android.", "success");
+
+    setTimeout(() => {
+      btn.classList.remove("done");
+      btn.innerHTML = orig;
+      lucide.createIcons({ nodes: [btn] });
+    }, 3400);
+  } catch (e) {
+    btn.classList.add("err");
+    btn.innerHTML = `<i data-lucide="rotate-ccw"></i><span>Retry</span>`;
+    lucide.createIcons({ nodes: [btn] });
+    btn.onclick = () => startDownload(appId, btn);
+    toast("Download failed", "error");
+  }
+}
+
+/* ============================================================
+   DOWNLOADS VIEW
+   ============================================================ */
+async function renderDownloads() {
+  loadLocalDownloads();
+  const main = $("#main");
+  main.innerHTML = `
+    <div class="section-head" style="margin-bottom:20px">
+      <div>
+        <div class="section-title">Your downloads</div>
+        <div class="section-sub">On this device</div>
+      </div>
+    </div>
+    <div id="dlList"></div>
+  `;
+  if (!state.downloads.length) {
+    $("#dlList").innerHTML = `
+      <div class="empty">
+        <i data-lucide="arrow-down-to-line"></i>
+        <h3>No downloads yet</h3>
+        <p>Applications you download will appear here for quick access.</p>
+        <button class="btn btn-primary" style="margin-top:20px" onclick="Store.navigate('explore')">
+          <i data-lucide="compass"></i> Browse apps
+        </button>
+      </div>`;
+  } else {
+    $("#dlList").innerHTML = state.downloads.map(d => `
+      <div class="app-row" style="margin-bottom:10px" data-app="${d.appId}" tabindex="0">
+        <img class="icon" src="${escapeHtml(d.iconUrl||'')}" alt=""
+             onerror="this.style.visibility='hidden'">
+        <div class="info">
+          <div class="name">${escapeHtml(d.name)}</div>
+          <div class="dev">${d.versionName ? "v"+escapeHtml(d.versionName)+" · " : ""}${fmtBytes(d.fileSizeBytes)} · ${timeAgo(d.at)}</div>
+        </div>
+        <div class="install">Open</div>
+      </div>
+    `).join("");
+    bindCardClicks($("#dlList"));
+  }
+  lucide.createIcons();
+}
+
+/* ============================================================
+   FAVORITES VIEW
+   ============================================================ */
+async function renderFavorites() {
+  await loadFavorites();
+  const main = $("#main");
+  main.innerHTML = `
+    <div class="section-head" style="margin-bottom:20px">
+      <div>
+        <div class="section-title">Saved</div>
+        <div class="section-sub">${state.favorites.size} app${state.favorites.size === 1 ? "" : "s"}</div>
+      </div>
+    </div>
+    <div id="favList" class="carousel" style="flex-wrap:wrap;overflow:visible;gap:14px"></div>
+  `;
+  if (!state.favorites.size) {
+    $("#favList").innerHTML = `
+      <div class="empty" style="width:100%">
+        <i data-lucide="bookmark"></i>
+        <h3>Nothing saved</h3>
+        <p>Tap the bookmark on any app to save it here.</p>
+        <button class="btn btn-primary" style="margin-top:20px" onclick="Store.navigate('explore')">
+          <i data-lucide="compass"></i> Discover apps
+        </button>
+      </div>`;
+  } else {
+    const apps = (await Promise.all([...state.favorites].map(getAppById))).filter(Boolean);
+    $("#favList").innerHTML = apps.map(a => appCard(a)).join("");
+    bindCardClicks($("#favList"));
+  }
+  lucide.createIcons();
+}
+
+/* ============================================================
+   PROFILE
+   ============================================================ */
+async function renderProfile() {
+  const main = $("#main");
+  if (!state.user) {
+    main.innerHTML = `
+      <div class="empty">
+        <i data-lucide="user-round"></i>
+        <h3>Sign in to Selvo</h3>
+        <p>Sync favorites, write reviews, and keep your downloads in one place.</p>
+        <div style="display:flex;gap:10px;justify-content:center;margin-top:22px;flex-wrap:wrap">
+          <button class="btn btn-primary" onclick="Store.openAuth('login')">Sign in</button>
+          <button class="btn btn-ghost" onclick="Store.openAuth('register')">Create account</button>
+        </div>
+      </div>`;
+    lucide.createIcons();
+    return;
+  }
+  const u = state.user;
+  const initial = (u.displayName || u.email || "?")[0].toUpperCase();
+  main.innerHTML = `
+    <div class="profile-head">
+      <div class="profile-avatar">${u.photoURL ? `<img src="${escapeHtml(u.photoURL)}" alt="">` : escapeHtml(initial)}</div>
+      <div style="flex:1;min-width:0">
+        <div class="profile-name">${escapeHtml(u.displayName || u.email.split("@")[0])}</div>
+        <div class="profile-email">${escapeHtml(u.email || "")}</div>
+        ${u.emailVerified
+          ? `<div class="verified"><i data-lucide="check"></i> Verified</div>`
+          : `<div class="verified" style="color:var(--warn)"><i data-lucide="alert-circle"></i> Not verified · <a id="verifyLink" style="cursor:pointer;text-decoration:underline;color:inherit">Verify now</a></div>`}
+      </div>
+    </div>
+
+    <div class="list-item" id="editNameBtn"><i data-lucide="pen-line"></i><div class="txt">Edit display name</div><i data-lucide="chevron-right" class="arrow"></i></div>
+    <div class="list-item" id="changeTheme"><i data-lucide="moon-star"></i><div class="txt">Appearance</div><span class="kicker">${document.documentElement.getAttribute("data-theme")}</span><i data-lucide="chevron-right" class="arrow"></i></div>
+    <div class="list-item" onclick="Store.navigate('favorites')"><i data-lucide="bookmark"></i><div class="txt">Saved</div><span class="kicker">${state.favorites.size}</span><i data-lucide="chevron-right" class="arrow"></i></div>
+    <div class="list-item" onclick="Store.navigate('downloads')"><i data-lucide="arrow-down-to-line"></i><div class="txt">Downloads</div><span class="kicker">${state.downloads.length}</span><i data-lucide="chevron-right" class="arrow"></i></div>
+    <div class="list-item" id="resetPwBtn"><i data-lucide="key-round"></i><div class="txt">Reset password</div><i data-lucide="chevron-right" class="arrow"></i></div>
+    <div class="list-item" id="signOutBtn" style="color:var(--danger)">
+      <i data-lucide="log-out" style="color:var(--danger)"></i>
+      <div class="txt">Sign out</div>
+    </div>
+  `;
+  lucide.createIcons();
+
+  $("#verifyLink")?.addEventListener("click", async () => {
+    try { await sendEmailVerification(u); toast("Verification email sent", "success"); }
+    catch (e) { toast(e.message, "error"); }
+  });
+  $("#editNameBtn").onclick = () => {
+    const name = prompt("Display name", u.displayName || "");
+    if (name !== null && name.trim()) {
+      updateProfile(u, { displayName: name.trim() })
+        .then(() => { toast("Name updated", "success"); renderProfile(); });
+    }
+  };
+  $("#changeTheme").onclick = () => { $("#themeBtn").click(); setTimeout(renderProfile, 60); };
+  $("#resetPwBtn").onclick = async () => {
+    try { await sendPasswordResetEmail(auth, u.email); toast("Reset email sent", "success"); }
+    catch (e) { toast(e.message, "error"); }
+  };
+  $("#signOutBtn").onclick = async () => {
+    await signOut(auth);
+    toast("Signed out", "success");
+  };
+}
+
+/* ============================================================
+   AUTH — email/password only (Google removed)
+   ============================================================ */
+function openAuth(mode = "login") {
+  $("#authOverlay").classList.add("open");
+  $("#authTitle").textContent = mode === "login" ? "Welcome back" : "Create account";
+  $("#authBody").innerHTML = `
+    <div class="field">
+      <label for="authEmail">Email</label>
+      <input type="email" id="authEmail" autocomplete="email" inputmode="email">
+    </div>
+    <div class="field">
+      <label for="authPassword">Password</label>
+      <input type="password" id="authPassword" autocomplete="${mode==='login'?'current-password':'new-password'}">
+    </div>
+    <div class="form-error" id="authErr"></div>
+    <button class="btn btn-primary btn-block" id="authSubmit" style="margin-top:6px">
+      ${mode === "login" ? "Sign in" : "Create account"}
+    </button>
+    <div class="form-switch">
+      ${mode === "login"
+        ? `No account? <a id="switchAuth">Create one</a> · <a id="forgotBtn">Forgot password</a>`
+        : `Already have an account? <a id="switchAuth">Sign in</a>`}
+    </div>
+  `;
+  lucide.createIcons();
+
+  $("#switchAuth").onclick = () => openAuth(mode === "login" ? "register" : "login");
+
+  $("#forgotBtn")?.addEventListener("click", async () => {
+    const email = $("#authEmail").value.trim();
+    if (!email) { $("#authErr").textContent = "Enter your email first."; return; }
+    try { await sendPasswordResetEmail(auth, email); toast("Reset email sent", "success"); }
+    catch (e) { $("#authErr").textContent = e.message; }
+  });
+
+  $("#authSubmit").onclick = async () => {
+    const email = $("#authEmail").value.trim();
+    const pass  = $("#authPassword").value;
+    const err   = $("#authErr");
+    err.textContent = "";
+    if (!email || !pass) { err.textContent = "Email and password are required."; return; }
+    const btn = $("#authSubmit");
+    btn.disabled = true; btn.textContent = "Please wait…";
+    try {
+      if (mode === "login") {
+        await signInWithEmailAndPassword(auth, email, pass);
+      } else {
+        const cred = await createUserWithEmailAndPassword(auth, email, pass);
+        await updateProfile(cred.user, { displayName: email.split("@")[0] });
+        await setDoc(doc(db, "users", cred.user.uid), {
+          uid: cred.user.uid,
+          displayName: email.split("@")[0],
+          email,
+          createdAt: serverTimestamp(),
+          preferences: { theme: localStorage.getItem("plixo.theme") || "dark" }
+        }, { merge: true });
+        sendEmailVerification(cred.user).catch(()=>{});
+      }
+      closeAuth();
+      toast(mode === "login" ? "Signed in" : "Account created", "success");
+    } catch (e) {
+      const msg = (e.code || "").replace("auth/", "").replace(/-/g, " ");
+      err.textContent = msg.charAt(0).toUpperCase() + msg.slice(1) || e.message;
+    } finally {
+      btn.disabled = false;
+      btn.textContent = mode === "login" ? "Sign in" : "Create account";
+    }
+  };
+
+  setTimeout(() => $("#authEmail")?.focus(), 100);
+}
+
+function closeAuth() { $("#authOverlay").classList.remove("open"); }
+
+/* ============================================================
+   NAVIGATION
+   ============================================================ */
+async function navigate(view, opts = {}) {
+  state.view = view;
+  $$(".side-item, .nav-item").forEach(el => {
+    const active = el.dataset.view === view;
+    el.classList.toggle("active", active);
+    if (el.classList.contains("nav-item")) {
+      el.setAttribute("aria-current", active ? "page" : "false");
+    }
+  });
+  window.scrollTo({ top: 0, behavior: "instant" });
+
+  if (view === "home")           await renderHome();
+  else if (view === "explore")   await renderExplore(opts);
+  else if (view === "downloads") await renderDownloads();
+  else if (view === "favorites") await renderFavorites();
+  else if (view === "profile")   await renderProfile();
+  lucide.createIcons();
+}
+$$(".side-item[data-view], .nav-item[data-view]").forEach(el => {
+  el.addEventListener("click", () => navigate(el.dataset.view));
+});
+$("#accountBtn").onclick = () =>
+  state.user ? navigate("profile") : openAuth("login");
+
+/* ============================================================
+   PUBLIC API
+   ============================================================ */
+window.Store = {
+  navigate,
+  openAuth,
+  closeAuth,
+  closeModal: () => $("#modalOverlay").classList.remove("open"),
+  dismissAnnouncement: (id) => {
+    sessionStorage.setItem("plixo.ann."+id, "1");
+    document.querySelector(".announce")?.remove();
+  }
+};
+$("#modalOverlay").addEventListener("click", e => {
+  if (e.target.id === "modalOverlay") Store.closeModal();
+});
+$("#authOverlay").addEventListener("click", e => {
+  if (e.target.id === "authOverlay") closeAuth();
+});
+
+/* ============================================================
+   AUTH STATE
+   ============================================================ */
+onAuthStateChanged(auth, async (user) => {
+  state.user = user;
+  if (user) {
+    state.profile = await safeQuery(async () => {
+      const snap = await getDoc(doc(db, "users", user.uid));
+      return snap.exists() ? snap.data() : null;
+    }, null);
+  } else {
+    state.profile = null;
+  }
+  await loadFavorites();
+});
+
+/* ============================================================
+   BOOT
+   ============================================================ */
+(async function boot() {
+  try {
+    getCategories().then(c => state.categories = c).catch(()=>{});
+    const h = new Date().getHours();
+    const greet = h < 12 ? "Good morning" : h < 18 ? "Good afternoon" : "Good evening";
+    $("#greeting").textContent = greet;
+
+    const hash = location.hash;
+    if (hash.startsWith("#app=")) {
+      await navigate("home");
+      openApp(hash.slice(5));
+    } else {
+      await navigate("home");
+    }
+  } catch (e) {
+    $("#main").innerHTML = `
+      <div class="empty">
+        <i data-lucide="alert-triangle"></i>
+        <h3>Couldn't reach the store</h3>
+        <p>${escapeHtml(e.message || "Check your Firebase configuration.")}</p>
+        <button class="btn btn-ghost" style="margin-top:20px" onclick="location.reload()">Retry</button>
+      </div>`;
+    lucide.createIcons();
+  } finally {
+    setTimeout(() => $("#splash").classList.add("hide"), 700);
+    lucide.createIcons();
+  }
+})();
+
+/* ============================================================
+   KEYBOARD
+   ============================================================ */
+document.addEventListener("keydown", e => {
+  if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+    e.preventDefault();
+    if (state.view !== "home") navigate("home");
+    setTimeout(() => $("#homeSearchInput")?.focus(), 100);
+  }
+  if (e.key === "Escape") { Store.closeModal(); closeAuth(); }
+});
+</script>
+<script id="tg-theme-js">
+/* ===== TOKYO GHOUL THEME LAYER (classic script, runs before the app module) ===== */
+(function () {
+  "use strict";
+  var $ = function (s) { return document.querySelector(s); };
+  var root = document.documentElement;
+  var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var K = { dim: "plixo.tg.dim", embers: "plixo.tg.embers", on: "plixo.tg.on", url: "plixo.tg.url" };
+  /* Background-change buttons are OFF for users. Set to true to bring them back.
+     Background video is meant to be added from the admin app only. */
+  var USER_BG_CONTROLS = false;
+  function lsGet(k, d) { try { var v = localStorage.getItem(k); return v === null ? d : v; } catch (e) { return d; } }
+  function lsSet(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+  function lsDel(k) { try { localStorage.removeItem(k); } catch (e) {} }
+  function icons() { try { if (window.lucide) lucide.createIcons(); } catch (e) {} }
+
+  /* ---------- Splash: red eye ---------- */
+  var inner = $("#splash .splash-inner");
+  if (inner) {
+    var veins = "";
+    for (var i = 0; i < 14; i++) {
+      var a = (i / 14) * Math.PI * 2, r1 = 44, r2 = 96 + (i % 3) * 14;
+      var x1 = 100 + Math.cos(a) * r1, y1 = 70 + Math.sin(a) * r1 * .8;
+      var x2 = 100 + Math.cos(a + .18) * r2, y2 = 70 + Math.sin(a + .18) * r2 * .8;
+      veins += '<path d="M' + x1.toFixed(1) + " " + y1.toFixed(1) + " L" + x2.toFixed(1) + " " + y2.toFixed(1) + '"/>';
+    }
+    inner.insertAdjacentHTML("afterbegin",
+      '<svg class="tg-eye" viewBox="0 0 200 140" aria-hidden="true">' +
+      '<defs><radialGradient id="tgIrisG" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#ff6a7a"/><stop offset=".5" stop-color="#e3122c"/><stop offset="1" stop-color="#4a0007"/></radialGradient>' +
+      '<clipPath id="tgLidC"><path d="M8 70 Q100 -10 192 70 Q100 150 8 70Z"/></clipPath></defs>' +
+      '<g class="tg-lid" clip-path="url(#tgLidC)"><rect width="200" height="140" fill="#050304"/>' +
+      '<g class="tg-veins" stroke="#e3122c" stroke-width="1.1" fill="none" stroke-linecap="round">' + veins + "</g>" +
+      '<g class="tg-iris"><circle cx="100" cy="70" r="40" fill="url(#tgIrisG)"/>' +
+      '<circle cx="100" cy="70" r="40" fill="none" stroke="#ff9aa6" stroke-width="1" opacity=".5"/>' +
+      '<circle cx="100" cy="70" r="12" fill="#050304"/><circle cx="87" cy="55" r="5" fill="#fff" opacity=".9"/></g></g>' +
+      '<path d="M8 70 Q100 -10 192 70 Q100 150 8 70Z" fill="none" stroke="#f6f2ee" stroke-width="2.2"/></svg>' +
+      '<div class="tg-splash-kanji">喰種</div>');
+  }
+
+  /* ---------- Slash transition on tab change ---------- */
+  var slash = $("#tgSlash");
+  function fireSlash() {
+    if (reduce || !slash) return;
+    slash.classList.remove("go"); void slash.offsetWidth; slash.classList.add("go");
+  }
+  document.addEventListener("click", function (e) {
+    var t = e.target.closest && e.target.closest(".side-item[data-view], .nav-item[data-view]");
+    if (t && !t.classList.contains("active")) fireSlash();
+  }, true);
+
+  /* ---------- 3D tilt ---------- */
+  var SEL = ".app-card,.cat-card,.app-row,.hero", cur = null;
+  function tilt(el, x, y, max) {
+    var r = el.getBoundingClientRect(); if (!r.width || !r.height) return;
+    var px = (x - r.left) / r.width, py = (y - r.top) / r.height;
+    el.style.setProperty("--ry", ((px - .5) * 2 * max).toFixed(2) + "deg");
+    el.style.setProperty("--rx", ((.5 - py) * 2 * max).toFixed(2) + "deg");
+  }
+  function untilt(el) { el.style.removeProperty("--rx"); el.style.removeProperty("--ry"); }
+  function maxFor(el) { return el.matches(".app-row,.hero") ? 3.5 : 11; }
+  document.addEventListener("pointermove", function (e) {
+    if (e.pointerType !== "mouse" || reduce) return;
+    var el = e.target.closest && e.target.closest(SEL);
+    if (cur && cur !== el) untilt(cur);
+    if (el) tilt(el, e.clientX, e.clientY, maxFor(el));
+    cur = el;
+  }, { passive: true });
+  document.addEventListener("pointerdown", function (e) {
+    if (e.pointerType === "mouse" || reduce) return;
+    var el = e.target.closest && e.target.closest(SEL);
+    if (!el || el.classList.contains("hero")) return;
+    tilt(el, e.clientX, e.clientY, 9); el.classList.add("tg-press");
+    var end = function () {
+      untilt(el); el.classList.remove("tg-press");
+      ["pointerup", "pointercancel", "pointerleave"].forEach(function (n) { el.removeEventListener(n, end); });
+    };
+    ["pointerup", "pointercancel", "pointerleave"].forEach(function (n) { el.addEventListener(n, end); });
+  }, { passive: true });
+
+  /* ---------- Embers ---------- */
+  var bg = $("#tgBg"), cv = $("#tgEmbers"), ctx = cv && cv.getContext("2d");
+  var W = 0, H = 0, dpr = 1, parts = [], raf = 0, embersOn = lsGet(K.embers, "1") === "1";
+  function spawn(init) {
+    return { x: Math.random() * W, y: init ? Math.random() * H : H + 20 * dpr,
+      r: (Math.random() * 2.2 + .6) * dpr, vy: -(Math.random() * .55 + .15) * dpr,
+      vx: (Math.random() - .5) * .25 * dpr, a: Math.random() * .7 + .25,
+      ph: Math.random() * 6.28, w: Math.random() < .18 };
+  }
+  function resize() {
+    if (!cv) return;
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    W = cv.width = Math.round(innerWidth * dpr); H = cv.height = Math.round(innerHeight * dpr);
+    var n = innerWidth < 700 ? 26 : 46; parts = [];
+    for (var i = 0; i < n; i++) parts.push(spawn(true));
+  }
+  function loop(t) {
+    raf = 0; if (!embersOn || document.hidden || reduce || !ctx) return;
+    ctx.clearRect(0, 0, W, H);
+    ctx.globalCompositeOperation = root.getAttribute("data-theme") === "light" ? "source-over" : "lighter";
+    for (var i = 0; i < parts.length; i++) {
+      var p = parts[i];
+      p.x += p.vx + Math.sin(t / 1400 + p.ph) * .25 * dpr; p.y += p.vy;
+      if (p.y < -20 * dpr) parts[i] = p = spawn(false);
+      var c = p.w ? "255,255,255" : "255,48,68";
+      ctx.fillStyle = "rgba(" + c + "," + (p.a * .18).toFixed(3) + ")";
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.r * 3.2, 0, 6.283); ctx.fill();
+      ctx.fillStyle = "rgba(" + c + "," + p.a.toFixed(3) + ")";
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, 6.283); ctx.fill();
+    }
+    raf = requestAnimationFrame(loop);
+  }
+  function startEmbers() { if (!raf && embersOn && !reduce) raf = requestAnimationFrame(loop); }
+  function setEmbers(on) {
+    embersOn = on; lsSet(K.embers, on ? "1" : "0");
+    bg.classList.toggle("tg-no-embers", !on); if (on) startEmbers();
+  }
+  resize(); addEventListener("resize", resize);
+  document.addEventListener("visibilitychange", startEmbers);
+  bg.classList.toggle("tg-no-embers", !embersOn); startEmbers();
+
+  /* ---------- Background video (file saved in IndexedDB, or link) ---------- */
+  var vid = $("#tgVideo"), preview = $("#tgPreview"), msgEl = $("#tgMsg");
+  var enabled = lsGet(K.on, "1") === "1", loaded = false, objUrl = null, label = "";
+  function msg(t) { msgEl.textContent = t || ""; }
+  function idb() {
+    return new Promise(function (res, rej) {
+      var r = indexedDB.open("plixo-tg", 1);
+      r.onupgradeneeded = function () { r.result.createObjectStore("kv"); };
+      r.onsuccess = function () { res(r.result); }; r.onerror = function () { rej(r.error); };
+    });
+  }
+  function idbOp(mode, fn) {
+    return idb().then(function (d) {
+      return new Promise(function (res, rej) {
+        var t = d.transaction("kv", mode), q = fn(t.objectStore("kv"));
+        t.oncomplete = function () { res(q && q.result); }; t.onerror = function () { rej(t.error); };
+      });
+    });
+  }
+  function describe() {
+    if (!vid.getAttribute("src")) preview.textContent = "No video yet. Using the default Tokyo mist.";
+    else preview.textContent = (loaded ? "Playing: " : "Loading: ") + label + (enabled ? "" : " (hidden)");
+  }
+  function refresh() { bg.classList.toggle("has-video", enabled && loaded); describe(); }
+  function setSource(src, name) {
+    loaded = false; label = name || "";
+    vid.pause();
+    if (!src) { vid.removeAttribute("src"); vid.load(); refresh(); return; }
+    vid.src = src; vid.load();
+    var p = vid.play();
+    if (p && p.catch) p.catch(function () {
+      document.addEventListener("pointerdown", function () { vid.play().catch(function () {}); }, { once: true });
+    });
+    describe();
+  }
+  vid.addEventListener("loadeddata", function () { loaded = true; msg(""); refresh(); });
+  vid.addEventListener("error", function () {
+    if (!vid.getAttribute("src")) return;
+    loaded = false; refresh();
+    msg("This video can't play. Use a video file, or a direct .mp4 / .webm link.");
+  });
+  function revoke() { if (objUrl) { URL.revokeObjectURL(objUrl); objUrl = null; } }
+
+  $("#tgPick").addEventListener("click", function () { $("#tgFile").click(); });
+  $("#tgFile").addEventListener("change", function (e) {
+    var f = e.target.files && e.target.files[0]; if (!f) return;
+    if (f.type.indexOf("video/") !== 0 && !/\.(mp4|webm|mov|m4v|ogv)$/i.test(f.name)) { msg("Please choose a video file."); return; }
+    msg("");
+    idbOp("readwrite", function (s) { return s.put(f, "video"); })
+      .catch(function () { msg("Couldn't save it for next time, so it works for this visit only."); });
+    lsDel(K.url); revoke(); objUrl = URL.createObjectURL(f);
+    enabled = true; lsSet(K.on, "1"); $("#tgOn").checked = true;
+    setSource(objUrl, f.name); e.target.value = "";
+  });
+  $("#tgUrlApply").addEventListener("click", function () {
+    var u = $("#tgUrl").value.trim();
+    if (!/^https?:\/\//i.test(u)) { msg("Paste a full link starting with http:// or https://"); return; }
+    msg(""); lsSet(K.url, u);
+    idbOp("readwrite", function (s) { return s.delete("video"); }).catch(function () {});
+    revoke(); enabled = true; lsSet(K.on, "1"); $("#tgOn").checked = true;
+    setSource(u, u);
+  });
+  $("#tgRemove").addEventListener("click", function () {
+    idbOp("readwrite", function (s) { return s.delete("video"); }).catch(function () {});
+    lsDel(K.url); revoke(); $("#tgUrl").value = ""; msg(""); setSource(null);
+  });
+  $("#tgOn").checked = enabled;
+  $("#tgOn").addEventListener("change", function (e) {
+    enabled = e.target.checked; lsSet(K.on, enabled ? "1" : "0");
+    if (enabled) vid.play().catch(function () {}); else vid.pause();
+    refresh();
+  });
+  $("#tgEmbersToggle").checked = embersOn;
+  $("#tgEmbersToggle").addEventListener("change", function (e) { setEmbers(e.target.checked); });
+  var dim = $("#tgDim"), dimVal = $("#tgDimVal");
+  function applyDim(v) { root.style.setProperty("--tg-dim", (v / 100).toFixed(2)); dimVal.textContent = v + "%"; }
+  dim.value = lsGet(K.dim, "60"); applyDim(+dim.value);
+  dim.addEventListener("input", function () { applyDim(+dim.value); lsSet(K.dim, dim.value); });
+
+  (function restore() {
+    var saved = lsGet(K.url, "");
+    idbOp("readonly", function (s) { return s.get("video"); }).then(function (blob) {
+      if (blob) { objUrl = URL.createObjectURL(blob); setSource(objUrl, blob.name || "saved video"); }
+      else if (saved) { $("#tgUrl").value = saved; setSource(saved, saved); }
+    }).catch(function () { if (saved) { $("#tgUrl").value = saved; setSource(saved, saved); } });
+  })();
+
+  /* ---------- Settings sheet open/close ---------- */
+  var ov = $("#tgVideoOverlay");
+  function openSheet() { if (!USER_BG_CONTROLS) return; ov.classList.add("open"); icons(); }
+  function closeSheet() { ov.classList.remove("open"); }
+  $("#tgVideoClose").addEventListener("click", closeSheet);
+  ov.addEventListener("click", function (e) { if (e.target === ov) closeSheet(); });
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeSheet(); });
+
+  /* ---------- Entry points: top bar, side nav, profile ---------- */
+  function addEntryPoints() {
+    if (!USER_BG_CONTROLS) return;
+    var tb = $("#themeBtn");
+    if (tb && !$("#tgVideoBtn")) {
+      var b = document.createElement("button");
+      b.className = "icon-btn"; b.id = "tgVideoBtn"; b.setAttribute("aria-label", "Background video");
+      b.innerHTML = '<i data-lucide="film"></i>'; b.addEventListener("click", openSheet);
+      tb.parentNode.insertBefore(b, tb);
+    }
+    var sb = $("#themeSideBtn");
+    if (sb && !$("#tgSideBtn")) {
+      var d = document.createElement("div");
+      d.className = "side-item"; d.id = "tgSideBtn";
+      d.innerHTML = '<i data-lucide="film"></i><span>Background</span>'; d.addEventListener("click", openSheet);
+      sb.parentNode.insertBefore(d, sb);
+    }
+    icons();
+  }
+  addEntryPoints();
+  var main = $("#main");
+  if (main) new MutationObserver(function () {
+    var ct = document.getElementById("changeTheme");
+    if (USER_BG_CONTROLS && ct && !document.getElementById("tgProfileBg")) {
+      var d = document.createElement("div");
+      d.className = "list-item"; d.id = "tgProfileBg";
+      d.innerHTML = '<i data-lucide="film"></i><div class="txt">Background video</div><i data-lucide="chevron-right" class="arrow"></i>';
+      d.addEventListener("click", openSheet); ct.after(d); icons();
+    }
+  }).observe(main, { childList: true });
+})();
+</script>
+</body>
+</html>
