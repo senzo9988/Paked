@@ -1320,6 +1320,32 @@ html body .side-nav{border-right:1px solid var(--glass-border-strong)}
 #tgMsg{min-height:20px}
 .tg-help{font-size:12px;color:var(--text-3);line-height:1.5;margin:0 0 16px}
 </style>
+<style id="tg-liquid">
+/* ===== LIQUID GLASS (additive) — delete this whole block to go back ===== */
+html{--lg-blur:22px;--lg-sat:190%}
+html[data-theme="dark"]{--lg-fill:rgba(255,255,255,.075);--lg-fill2:rgba(255,255,255,.015);--lg-tint:rgba(40,6,12,.34);--lg-edge:rgba(255,255,255,.34);--lg-edge2:rgba(255,255,255,.07);--lg-line:rgba(255,255,255,.14)}
+html[data-theme="light"]{--lg-fill:rgba(255,255,255,.6);--lg-fill2:rgba(255,255,255,.2);--lg-tint:rgba(255,255,255,.2);--lg-edge:rgba(255,255,255,.95);--lg-edge2:rgba(255,255,255,.4);--lg-line:rgba(120,0,15,.14)}
+html body .app-card,html body .cat-card,html body .app-row,html body .bottom-nav,html body .searchbar{
+  background:linear-gradient(150deg,var(--lg-fill),var(--lg-fill2) 52%,rgba(227,18,44,.06)),var(--lg-tint);
+  -webkit-backdrop-filter:blur(var(--lg-blur)) saturate(var(--lg-sat)) brightness(1.06);
+  backdrop-filter:blur(var(--lg-blur)) saturate(var(--lg-sat)) brightness(1.06);
+  border:1px solid var(--lg-line);
+  box-shadow:inset 0 1.5px 0 var(--lg-edge),inset 1.5px 0 0 var(--lg-edge2),inset 0 -1px 0 var(--lg-edge2),inset 0 0 26px rgba(255,255,255,.04),0 22px 44px -22px rgba(0,0,0,.75);
+}
+html body .app-card:hover,html body .cat-card:hover,html body .app-row:hover{
+  background:linear-gradient(150deg,rgba(255,255,255,.13),var(--lg-fill2) 52%,rgba(227,18,44,.12)),var(--lg-tint);
+  box-shadow:inset 0 1.5px 0 var(--lg-edge),inset 0 0 26px rgba(255,255,255,.06),0 34px 60px -22px rgba(0,0,0,.85),0 0 38px -8px var(--accent-glow);
+}
+html body .bottom-nav{box-shadow:inset 0 1.5px 0 var(--lg-edge),inset 0 -1px 0 var(--lg-edge2),0 22px 50px -10px rgba(0,0,0,.8),0 0 34px -10px var(--accent-glow)}
+html body .sheet{-webkit-backdrop-filter:blur(26px) saturate(180%);backdrop-filter:blur(26px) saturate(180%);box-shadow:inset 0 1.5px 0 var(--lg-edge),var(--sh-3)}
+html body .icon-btn,html body .chip:not(.active){-webkit-backdrop-filter:blur(14px) saturate(180%);backdrop-filter:blur(14px) saturate(180%);box-shadow:inset 0 1px 0 var(--lg-edge2)}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+  html body .app-card,html body .cat-card,html body .app-row,html body .bottom-nav,html body .searchbar{background:linear-gradient(155deg,var(--tg-card-a),var(--tg-card-b))}
+}
+.tg-eye .tg-pupil{transform-origin:100px 70px;animation:tgPupil 2.2s ease-in-out 1.1s infinite}
+@keyframes tgPupil{0%,100%{transform:scale(1)}50%{transform:scale(.78)}}
+@media(prefers-reduced-motion:reduce){.tg-eye .tg-pupil{animation:none}}
+</style>
 </head>
 <body>
 <!-- ===== TOKYO GHOUL THEME LAYER: background, slash transition, video settings ===== -->
@@ -2728,24 +2754,47 @@ document.addEventListener("keydown", e => {
   /* ---------- Splash: red eye ---------- */
   var inner = $("#splash .splash-inner");
   if (inner) {
-    var veins = "";
-    for (var i = 0; i < 14; i++) {
-      var a = (i / 14) * Math.PI * 2, r1 = 44, r2 = 96 + (i % 3) * 14;
-      var x1 = 100 + Math.cos(a) * r1, y1 = 70 + Math.sin(a) * r1 * .8;
-      var x2 = 100 + Math.cos(a + .18) * r2, y2 = 70 + Math.sin(a + .18) * r2 * .8;
-      veins += '<path d="M' + x1.toFixed(1) + " " + y1.toFixed(1) + " L" + x2.toFixed(1) + " " + y2.toFixed(1) + '"/>';
-    }
-    inner.insertAdjacentHTML("afterbegin",
-      '<svg class="tg-eye" viewBox="0 0 200 140" aria-hidden="true">' +
-      '<defs><radialGradient id="tgIrisG" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#ff6a7a"/><stop offset=".5" stop-color="#e3122c"/><stop offset="1" stop-color="#4a0007"/></radialGradient>' +
-      '<clipPath id="tgLidC"><path d="M8 70 Q100 -10 192 70 Q100 150 8 70Z"/></clipPath></defs>' +
-      '<g class="tg-lid" clip-path="url(#tgLidC)"><rect width="200" height="140" fill="#050304"/>' +
-      '<g class="tg-veins" stroke="#e3122c" stroke-width="1.1" fill="none" stroke-linecap="round">' + veins + "</g>" +
-      '<g class="tg-iris"><circle cx="100" cy="70" r="40" fill="url(#tgIrisG)"/>' +
-      '<circle cx="100" cy="70" r="40" fill="none" stroke="#ff9aa6" stroke-width="1" opacity=".5"/>' +
-      '<circle cx="100" cy="70" r="12" fill="#050304"/><circle cx="87" cy="55" r="5" fill="#fff" opacity=".9"/></g></g>' +
-      '<path d="M8 70 Q100 -10 192 70 Q100 150 8 70Z" fill="none" stroke="#f6f2ee" stroke-width="2.2"/></svg>' +
-      '<div class="tg-splash-kanji">喰種</div>');
+    var eye = (function () {
+      var seed = 7, P = function (n) { return n.toFixed(1); };
+      var rnd = function () { seed = (seed * 9301 + 49297) % 233280; return seed / 233280; };
+      var veins = "", fib = "", k, a;
+      for (k = 0; k < 13; k++) {
+        a = (k / 13) * 6.283 + rnd() * .25;
+        var r2 = 92 + rnd() * 26, bend = (rnd() - .5) * 26;
+        var x1 = 100 + Math.cos(a) * 44, y1 = 70 + Math.sin(a) * 35;
+        var x2 = 100 + Math.cos(a + .12) * r2, y2 = 70 + Math.sin(a + .12) * r2 * .8;
+        var mx = (x1 + x2) / 2 + Math.cos(a + 1.57) * bend, my = (y1 + y2) / 2 + Math.sin(a + 1.57) * bend * .8;
+        veins += '<path d="M' + P(x1) + " " + P(y1) + " Q" + P(mx) + " " + P(my) + " " + P(x2) + " " + P(y2) + '"/>' +
+          '<path stroke-width=".5" d="M' + P(mx) + " " + P(my) + " L" + P(mx + Math.cos(a - .5) * 16) + " " + P(my + Math.sin(a - .5) * 12) + '"/>';
+      }
+      for (k = 0; k < 110; k++) {
+        a = rnd() * 6.283; var f1 = 13 + rnd() * 6, f2 = 30 + rnd() * 9;
+        fib += '<path d="M' + P(100 + Math.cos(a) * f1) + " " + P(70 + Math.sin(a) * f1) + " L" + P(100 + Math.cos(a + .04) * f2) + " " + P(70 + Math.sin(a + .04) * f2) +
+          '" stroke="' + (k % 3 ? "#ff9aa6" : "#3a0008") + '" stroke-opacity="' + (.18 + rnd() * .4).toFixed(2) + '" stroke-width="' + (.35 + rnd() * .5).toFixed(2) + '"/>';
+      }
+      return '<svg class="tg-eye" viewBox="0 0 200 140" aria-hidden="true"><defs>' +
+        '<radialGradient id="tgIrisG" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#2a0006"/><stop offset=".3" stop-color="#8a0014"/><stop offset=".58" stop-color="#e3122c"/><stop offset=".82" stop-color="#ff4d62"/><stop offset=".94" stop-color="#a30018"/><stop offset="1" stop-color="#2a0005"/></radialGradient>' +
+        '<radialGradient id="tgScl" cx="50%" cy="50%" r="70%"><stop offset="0" stop-color="#1c060a"/><stop offset="1" stop-color="#020102"/></radialGradient>' +
+        '<linearGradient id="tgShade" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#000" stop-opacity=".9"/><stop offset=".45" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".45"/></linearGradient>' +
+        '<linearGradient id="tgRim" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#e3122c"/><stop offset=".5" stop-color="#f6f2ee"/><stop offset="1" stop-color="#e3122c"/></linearGradient>' +
+        '<linearGradient id="tgGloss" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".38"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>' +
+        '<filter id="tgSoft" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="1.4"/></filter>' +
+        '<clipPath id="tgLidC"><path d="M6 72 Q100 -14 194 72 Q100 152 6 72Z"/></clipPath></defs>' +
+        '<g class="tg-lid" clip-path="url(#tgLidC)"><rect width="200" height="140" fill="url(#tgScl)"/>' +
+        '<g class="tg-veins" stroke="#e3122c" stroke-width="1" fill="none" stroke-linecap="round">' + veins + "</g>" +
+        '<g class="tg-iris"><circle cx="100" cy="70" r="40" fill="url(#tgIrisG)"/><g fill="none">' + fib + "</g>" +
+        '<circle cx="100" cy="70" r="24" fill="none" stroke="#ff8d9a" stroke-opacity=".28" stroke-width="1"/>' +
+        '<circle cx="100" cy="70" r="39" fill="none" stroke="#1a0003" stroke-opacity=".85" stroke-width="3.2"/>' +
+        '<circle class="tg-pupil" cx="100" cy="70" r="12" fill="#020102"/>' +
+        '<circle cx="100" cy="70" r="12.6" fill="none" stroke="#ff5a6e" stroke-opacity=".45" stroke-width=".8"/>' +
+        '<ellipse cx="86" cy="55" rx="8" ry="4.6" transform="rotate(-32 86 55)" fill="#fff" opacity=".85" filter="url(#tgSoft)"/>' +
+        '<circle cx="114" cy="86" r="2.4" fill="#fff" opacity=".5" filter="url(#tgSoft)"/></g>' +
+        '<rect width="200" height="140" fill="url(#tgShade)"/>' +
+        '<path d="M20 64 Q100 6 180 64 Q100 30 20 64Z" fill="url(#tgGloss)" opacity=".5"/></g>' +
+        '<path d="M6 72 Q100 -14 194 72 Q100 152 6 72Z" fill="none" stroke="url(#tgRim)" stroke-width="2.2"/>' +
+        '<path d="M14 66 Q100 -6 186 66" fill="none" stroke="#f6f2ee" stroke-opacity=".35" stroke-width="1"/></svg>';
+    })();
+    inner.insertAdjacentHTML("afterbegin", eye + '<div class="tg-splash-kanji">喰種</div>');
   }
 
   /* ---------- Slash transition on tab change ---------- */
@@ -2911,10 +2960,30 @@ document.addEventListener("keydown", e => {
   (function restore() {
     var saved = lsGet(K.url, "");
     idbOp("readonly", function (s) { return s.get("video"); }).then(function (blob) {
-      if (blob) { objUrl = URL.createObjectURL(blob); setSource(objUrl, blob.name || "saved video"); }
+      if (remoteSrc) { /* admin background wins */ }
+      else if (blob) { objUrl = URL.createObjectURL(blob); setSource(objUrl, blob.name || "saved video"); }
       else if (saved) { $("#tgUrl").value = saved; setSource(saved, saved); }
-    }).catch(function () { if (saved) { $("#tgUrl").value = saved; setSource(saved, saved); } });
+    }).catch(function () { if (saved && !remoteSrc) { $("#tgUrl").value = saved; setSource(saved, saved); } });
   })();
+
+  /* ---------- Admin-controlled background (synced from Firestore settings/store) ---------- */
+  var remoteSrc = null;
+  window.TGBG = {
+    applyRemote: function (d, cached) {
+      if (!d) return;
+      if (!cached) lsSet("plixo.tg.remote", JSON.stringify({ bgVideoUrl: d.bgVideoUrl, bgVideoEnabled: d.bgVideoEnabled, bgDim: d.bgDim, bgEmbers: d.bgEmbers, bgUserChoice: d.bgUserChoice }));
+      var url = typeof d.bgVideoUrl === "string" ? d.bgVideoUrl.trim() : "";
+      if (typeof d.bgDim === "number") { dim.value = Math.round(d.bgDim); applyDim(Math.round(d.bgDim)); }
+      if (typeof d.bgEmbers === "boolean") { embersOn = d.bgEmbers; bg.classList.toggle("tg-no-embers", !embersOn); if (embersOn) startEmbers(); }
+      if (USER_BG_CONTROLS && d.bgUserChoice === true && (lsGet(K.url, "") || objUrl)) return;
+      if (url && d.bgVideoEnabled !== false) {
+        enabled = true;
+        if (url !== remoteSrc) { remoteSrc = url; setSource(url, "Store background"); } else { refresh(); }
+      } else if (url) { enabled = false; vid.pause(); refresh(); }
+      else if (remoteSrc) { remoteSrc = null; setSource(null); }
+    }
+  };
+  try { var cachedBg = JSON.parse(lsGet("plixo.tg.remote", "null")); if (cachedBg) window.TGBG.applyRemote(cachedBg, true); } catch (e) {}
 
   /* ---------- Settings sheet open/close ---------- */
   var ov = $("#tgVideoOverlay");
@@ -2956,5 +3025,17 @@ document.addEventListener("keydown", e => {
   }).observe(main, { childList: true });
 })();
 </script>
+<script type="module" id="tg-store-bg">
+/* Store: live background from the admin app (Firestore settings/store -> bgVideoUrl, bgDim, bgEmbers ...) */
+import { getApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
+import { getFirestore, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
+(function boot(n) {
+  try {
+    onSnapshot(doc(getFirestore(getApp()), "settings", "store"),
+      (s) => { if (s.exists() && window.TGBG) window.TGBG.applyRemote(s.data()); },
+      (e) => console.warn("[bg]", e.message));
+  } catch (e) { if ((n || 0) < 40) setTimeout(() => boot((n || 0) + 1), 250); }
+})(0);
+</script>
 </body>
-</html>
+   </html>
